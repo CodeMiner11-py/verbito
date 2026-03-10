@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz · Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <script src="questions.js"></script>
+  <style>
+    :root {
+      --red: #C81C1C;
+      --red-dark: #9e1515;
+      --red-light: rgba(200,28,28,0.08);
+      --bg: #f7f4f1;
+      --white: #ffffff;
+      --dark: #1c1410;
+      --gray: #6b6560;
+      --border: #e8e2dc;
+      --green: #15803d;
+      --green-light: #dcfce7;
+      --yellow: #92400e;
+      --yellow-light: #fef3c7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 36px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+
+    .nav-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    .nav-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      object-fit: cover;
+      display: none;
+    }
+
+    .nav-avatar-initial {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 2px solid rgba(200,28,28,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--red);
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .material-icons-round {
+      font-size: 1.1em;
+      vertical-align: middle;
+      line-height: 1;
+    }
+
+    /* ── SCREENS ── */
+    #screen-loading,
+    #screen-auth,
+    #screen-already-done,
+    #screen-quiz,
+    #screen-results {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .screen-active { display: flex !important; }
+
+    /* ── LOADING ── */
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ── AUTH GATE ── */
+    .gate-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .gate-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .gate-icon .material-icons-round {
+      font-size: 3rem;
+      color: var(--red);
+    }
+
+    .gate-card h2 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .gate-card p {
+      color: var(--gray);
+      font-size: 0.97rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red);
+      color: white;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(200,28,28,0.28);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(200,28,28,0.38);
+      background: var(--red-dark);
+    }
+
+    /* ── ALREADY DONE ── */
+    .done-score-circle {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 3px solid rgba(200,28,28,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .done-icon-wrap {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 3px solid rgba(200,28,28,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .done-icon-wrap .material-icons-round {
+      font-size: 2.6rem;
+      color: var(--red);
+    }
+
+    .done-score-circle .big-num {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .done-score-circle .out-of {
+      font-size: 0.78rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    /* ── QUIZ SCREEN ── */
+    #screen-quiz {
+      justify-content: flex-start;
+      padding-top: 2.5rem;
+    }
+
+    .quiz-shell {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 7px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--red);
+      border-radius: 10px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      width: 0%;
+    }
+
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gray);
+      white-space: nowrap;
+    }
+
+    /* Category + difficulty badge */
+    .q-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .q-cat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .cat-conjugation { background: #dbeafe; color: #1e40af; }
+    .cat-vocab       { background: #f3e8ff; color: #6b21a8; }
+    .cat-grammar     { background: #fef3c7; color: #92400e; }
+
+    .q-diff-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .q-diff-stars span {
+      font-size: 0.7rem;
+      color: var(--red);
+      opacity: 0.25;
+    }
+
+    .q-diff-stars span.lit { opacity: 1; }
+
+    /* Question card */
+    .question-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem 2.2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .question-text {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 1.6rem;
+    }
+
+    /* Options */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 520px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+
+    .option-btn {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 0.9rem 1.1rem;
+      text-align: left;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.93rem;
+      color: var(--dark);
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s, transform 0.18s;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--red);
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .option-btn.correct {
+      background: var(--green-light);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .option-btn.wrong {
+      background: #fef2f2;
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .option-btn.reveal-correct {
+      background: var(--green-light);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .option-btn:disabled { cursor: default; }
+
+    /* Explanation */
+    .explanation-box {
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      background: #f8f5f2;
+      border-left: 3px solid var(--red);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.6;
+      animation: fadeUp 0.3s ease both;
+      display: none;
+    }
+
+    .explanation-box.visible { display: block; }
+
+    .explanation-box strong { color: var(--dark); }
+
+    /* Next button */
+    .next-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.4rem;
+    }
+
+    .btn-next {
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--red);
+      color: white;
+      padding: 0.7rem 1.8rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(200,28,28,0.25);
+      transition: transform 0.2s, background 0.2s;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .btn-next.visible {
+      display: inline-flex;
+    }
+
+    .btn-next:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* ── RESULTS SCREEN ── */
+    #screen-results {
+      justify-content: flex-start;
+      padding-top: 3rem;
+    }
+
+    .results-shell {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .results-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .results-trophy {
+      font-size: 3.5rem !important;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--red);
+    }
+
+    .results-header h1 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .results-header p { color: var(--gray); font-size: 1rem; }
+
+    /* Big score */
+    .score-big {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 2.2rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      animation: fadeUp 0.5s ease 0.1s both;
+    }
+
+    .score-number {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .score-denom {
+      font-size: 1.2rem;
+      color: var(--gray);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .score-label {
+      display: inline-block;
+      padding: 0.35rem 1.1rem;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .score-label.excellent { background: var(--green-light); color: var(--green); }
+    .score-label.good      { background: var(--yellow-light); color: var(--yellow); }
+    .score-label.keep-going { background: #fef2f2; color: var(--red); }
+
+    /* Category breakdown */
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.5s ease 0.2s both;
+    }
+
+    @media (max-width: 520px) {
+      .breakdown-grid { grid-template-columns: 1fr; }
+    }
+
+    .breakdown-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.3rem 1rem;
+      text-align: center;
+    }
+
+    .breakdown-card .bc-icon {
+      font-size: 1.6rem;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .breakdown-card .bc-icon .material-icons-round {
+      font-size: 1.8rem;
+      color: var(--red);
+    }
+
+    .breakdown-card .bc-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .breakdown-card .bc-score {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .breakdown-card .bc-pct {
+      font-size: 0.82rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    /* Difficulty reached */
+    .level-badge-wrap {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.5s ease 0.3s both;
+    }
+
+    .level-badge-wrap .lbw-icon {
+      font-size: 2.2rem !important;
+      flex-shrink: 0;
+      color: var(--red);
+    }
+
+    .level-badge-wrap h3 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .level-badge-wrap p { color: var(--gray); font-size: 0.88rem; }
+
+    /* CTA */
+    .results-cta {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.5s ease 0.4s both;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      color: var(--dark);
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--red); transform: translateY(-2px); }
+
+    /* Saving indicator */
+    .saving-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray);
+      font-size: 0.85rem;
+      font-weight: 600;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .saving-indicator .mini-spin {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    .saving-indicator.saving .mini-spin { display: block; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      margin-top: auto;
+    }
+
+    footer strong { color: white; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes popIn {
+      0%   { transform: scale(0.85); opacity: 0; }
+      70%  { transform: scale(1.05); }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    .pop-in { animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+    /* ── RESPONSIVE NAV ── */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="bubble.png" alt="Verbito" />
+      <span>Verbito</span>
+    </a>
+    <div class="nav-user" id="navUser" style="display:none">
+      <div class="nav-avatar-initial" id="navInitial"></div>
+      <img class="nav-avatar" id="navAvatar" src="" alt=""/>
+      <span id="navName"></span>
+    </div>
+  </nav>
+
+  <!-- ① LOADING -->
+  <div id="screen-loading" class="screen-active" style="align-items:center;justify-content:center;">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ② NOT LOGGED IN -->
+  <div id="screen-auth">
+    <div class="gate-card">
+      <div class="gate-icon"><span class="material-icons-round">lock</span></div>
+      <h2>Sign in to take the quiz</h2>
+      <p>Your results are saved to your account and help track your Spanish level. Sign in to get started.</p>
+      <a href="continue.html" class="btn-primary">
+        <span class="material-icons-round">login</span> Sign In / Sign Up
+      </a>
+    </div>
+  </div>
+
+  <!-- ③ ALREADY COMPLETED -->
+  <div id="screen-already-done">
+    <div class="gate-card">
+      <div class="done-score-circle">
+        <span class="big-num" id="doneScore">—</span>
+        <span class="out-of">/ 20</span>
+      </div>
+      <div class="done-icon-wrap" style="display:none" id="doneIconWrap">
+        <span class="material-icons-round">task_alt</span>
+      </div>
+      <h2>You've already taken this quiz!</h2>
+      <p>The placement quiz can only be taken once. Your score has been saved and your learning path is set.<br><br>Head to the app to keep practising.</p>
+      <a href="app.html" class="btn-primary" style="margin-top:0.5rem">
+        <span class="material-icons-round">home</span> Go to Verbito
+      </a>
+    </div>
+  </div>
+
+  <!-- ④ QUIZ -->
+  <div id="screen-quiz">
+    <div class="quiz-shell">
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-label" id="progressLabel">1 / 20</span>
+      </div>
+
+      <!-- Meta -->
+      <div class="q-meta">
+        <span class="q-cat-badge" id="qCatBadge"></span>
+        <div class="q-diff-stars" id="qDiffStars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+      </div>
+
+      <!-- Question card -->
+      <div class="question-card" id="questionCard">
+        <p class="question-text" id="questionText"></p>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="explanation-box" id="explanationBox"></div>
+        <div class="next-wrap">
+          <button class="btn-next" id="btnNext">
+            Next <span class="material-icons-round">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ⑤ RESULTS -->
+  <div id="screen-results">
+    <div class="results-shell">
+
+      <div class="results-header">
+        <span class="results-trophy material-icons-round" id="resultsTrophy">emoji_events</span>
+        <h1 id="resultsTitle">Quiz Complete!</h1>
+        <p id="resultsSubtitle">Here's how you did across all three categories.</p>
+      </div>
+
+      <!-- Saving status -->
+      <div class="saving-indicator saving" id="savingIndicator">
+        <div class="mini-spin"></div>
+        <span id="savingText">Saving your results…</span>
+      </div>
+
+      <!-- Big score -->
+      <div class="score-big pop-in">
+        <div class="score-number" id="scoreNumber">—</div>
+        <div class="score-denom">out of 20</div>
+        <span class="score-label" id="scoreLabel"></span>
+      </div>
+
+      <!-- Category breakdown -->
+      <div class="breakdown-grid">
+        <div class="breakdown-card">
+          <span class="bc-icon"><span class="material-icons-round">format_size</span></span>
+          <span class="bc-name">Conjugation</span>
+          <div class="bc-score" id="bcConj">—</div>
+          <div class="bc-pct" id="bcConjPct"></div>
+        </div>
+        <div class="breakdown-card">
+          <span class="bc-icon"><span class="material-icons-round">menu_book</span></span>
+          <span class="bc-name">Vocabulary</span>
+          <div class="bc-score" id="bcVocab">—</div>
+          <div class="bc-pct" id="bcVocabPct"></div>
+        </div>
+        <div class="breakdown-card">
+          <span class="bc-icon"><span class="material-icons-round">edit_note</span></span>
+          <span class="bc-name">Grammar</span>
+          <div class="bc-score" id="bcGrammar">—</div>
+          <div class="bc-pct" id="bcGrammarPct"></div>
+        </div>
+      </div>
+
+      <!-- Level reached -->
+      <div class="level-badge-wrap">
+        <span class="lbw-icon material-icons-round" id="levelIcon">school</span>
+        <div>
+          <h3 id="levelName">Level</h3>
+          <p id="levelDesc">Your adaptive difficulty level</p>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="results-cta">
+        <a href="app.html" class="btn-primary">
+          <span class="material-icons-round">home</span> Go to Verbito
+        </a>
+        <a href="verb_conjugator.html" class="btn-secondary">
+          <span class="material-icons-round">search</span> Verb Lookup
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Made with <span class="material-icons-round" style="color:#f87171;font-size:1rem;vertical-align:middle">favorite</span> for Spanish learners · <strong>Verbito</strong></p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp }    from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged }
+                                from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp }
+                                from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // ── Firebase config ──────────────────────────────────────────────
+    const firebaseConfig = {
+      apiKey:            "AIzaSyAscnVMEcj-U0wr_uU9cy32S2XGqs7wo34",
+      authDomain:        "verbito-9c4c4.firebaseapp.com",
+      projectId:         "verbito-9c4c4",
+      storageBucket:     "verbito-9c4c4.firebasestorage.app",
+      messagingSenderId: "127778939909",
+      appId:             "1:127778939909:web:9ead92ec017c8c2e13a86c",
+      measurementId:     "G-52XVNJG3CG"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // ── Screen helpers ───────────────────────────────────────────────
+    const screens = ["loading","auth","already-done","quiz","results"];
+
+    function showScreen(name) {
+      screens.forEach(s => {
+        const el = document.getElementById(`screen-${s}`);
+        el.classList.toggle("screen-active", s === name);
+      });
+    }
+
+    // ── Nav user info ────────────────────────────────────────────────
+    function populateNav(user) {
+      document.getElementById("navUser").style.display = "flex";
+      document.getElementById("navName").textContent = user.displayName?.split(" ")[0] || "";
+      if (user.photoURL) {
+        const img = document.getElementById("navAvatar");
+        img.src = user.photoURL;
+        img.style.display = "block";
+        document.getElementById("navInitial").style.display = "none";
+      } else {
+        document.getElementById("navInitial").textContent = (user.displayName || "?")[0].toUpperCase();
+      }
+    }
+
+    // ── Auth gate ────────────────────────────────────────────────────
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        showScreen("auth");
+        return;
+      }
+
+      populateNav(user);
+
+      // Check Firestore: has user already completed quiz?
+      const userRef  = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      const data     = userSnap.exists() ? userSnap.data() : {};
+
+      if (data.hasCompletedQuiz) {
+        // Show "already done" screen with their score
+        const prev = data.quizScore ?? "—";
+        document.getElementById("doneScore").textContent = prev;
+        showScreen("already-done");
+        return;
+      }
+
+      // All clear — start quiz
+      startQuiz(user);
+    });
+
+    // ── Quiz logic ───────────────────────────────────────────────────
+    function startQuiz(user) {
+      showScreen("quiz");
+
+      const quiz        = new AdaptiveQuiz(20);
+      let   currentQ    = null;
+      let   answered    = false;
+
+      function renderQuestion() {
+        answered  = false;
+        currentQ  = quiz.nextQuestion();
+
+        if (!currentQ) {
+          // Quiz over — go to results
+          finishQuiz(user, quiz);
+          return;
+        }
+
+        // Progress bar
+        const idx = quiz.questionIndex;
+        document.getElementById("progressFill").style.width = `${((idx - 1) / 20) * 100}%`;
+        document.getElementById("progressLabel").textContent = `${idx} / 20`;
+
+        // Category badge
+        const badge = document.getElementById("qCatBadge");
+        const catMap = {
+          conjugation: ["cat-conjugation", "format_size",   "Conjugation"],
+          vocab:       ["cat-vocab",        "menu_book",     "Vocabulary"],
+          grammar:     ["cat-grammar",      "edit_note",     "Grammar"],
+        };
+        const [cls, icon, label] = catMap[currentQ.category] || ["cat-conjugation", "format_size", currentQ.category];
+        badge.className = `q-cat-badge ${cls}`;
+        badge.innerHTML = `<span class="material-icons-round" style="font-size:0.9rem">${icon}</span> ${label}`;
+
+        // Difficulty stars
+        const stars = document.querySelectorAll("#qDiffStars span");
+        stars.forEach((s, i) => s.classList.toggle("lit", i < currentQ.difficulty));
+
+        // Question text
+        document.getElementById("questionText").textContent = currentQ.question;
+
+        // Options
+        const grid = document.getElementById("optionsGrid");
+        grid.innerHTML = "";
+        currentQ.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.className   = "option-btn";
+          btn.textContent = opt;
+          btn.addEventListener("click", () => handleAnswer(btn, opt));
+          grid.appendChild(btn);
+        });
+
+        // Hide explanation + next
+        const expBox = document.getElementById("explanationBox");
+        expBox.classList.remove("visible");
+        expBox.innerHTML = "";
+        document.getElementById("btnNext").classList.remove("visible");
+
+        // Re-animate card
+        const card = document.getElementById("questionCard");
+        card.style.animation = "none";
+        requestAnimationFrame(() => { card.style.animation = ""; });
+      }
+
+      function handleAnswer(clickedBtn, selected) {
+        if (answered) return;
+        answered = true;
+
+        quiz.recordAnswer(currentQ, selected);
+
+        const correct = selected === currentQ.answer;
+
+        // Style all buttons
+        const allBtns = document.querySelectorAll(".option-btn");
+        allBtns.forEach(b => {
+          b.disabled = true;
+          if (b.textContent === currentQ.answer) {
+            b.classList.add(correct && b === clickedBtn ? "correct" : "reveal-correct");
+          }
+        });
+
+        if (!correct) {
+          clickedBtn.classList.add("wrong");
+        }
+
+        // Explanation
+        const expBox = document.getElementById("explanationBox");
+        const feedbackIcon = correct
+          ? `<span class="material-icons-round" style="color:var(--green);font-size:1rem;vertical-align:middle">check_circle</span>`
+          : `<span class="material-icons-round" style="color:var(--red);font-size:1rem;vertical-align:middle">cancel</span>`;
+        expBox.innerHTML = `<strong>${feedbackIcon} ${correct ? "Correct!" : "Not quite."}</strong> ${currentQ.explanation}`;
+        expBox.classList.add("visible");
+
+        // Next button (or finish label)
+        const btnNext = document.getElementById("btnNext");
+        const isLast  = quiz.questionIndex >= 20;
+        btnNext.innerHTML = isLast
+          ? `See Results <span class="material-icons-round">emoji_events</span>`
+          : `Next <span class="material-icons-round">arrow_forward</span>`;
+        btnNext.classList.add("visible");
+      }
+
+      document.getElementById("btnNext").addEventListener("click", renderQuestion);
+
+      renderQuestion();
+    }
+
+    // ── Finish & save ─────────────────────────────────────────────────
+    async function finishQuiz(user, quiz) {
+      const results = quiz.getResults();
+      showScreen("results");
+      renderResults(results);
+      await saveResults(user, results);
+    }
+
+    function renderResults(r) {
+      // Score
+      document.getElementById("scoreNumber").textContent = r.score;
+
+      // Label
+      const pct = r.raw / r.total;
+      let trophyIcon, title, subtitle, labelClass, labelText;
+      if (pct >= 0.8) {
+        trophyIcon = "emoji_events";  title = "¡Excelente!"; subtitle = "You're performing at a high level.";
+        labelClass = "excellent"; labelText = "Advanced Learner";
+      } else if (pct >= 0.55) {
+        trophyIcon = "star";          title = "Good Work!";  subtitle = "Solid understanding with room to grow.";
+        labelClass = "good"; labelText = "Intermediate Learner";
+      } else {
+        trophyIcon = "fitness_center"; title = "Keep Going!"; subtitle = "Every expert was once a beginner.";
+        labelClass = "keep-going"; labelText = "Beginner Learner";
+      }
+
+      document.getElementById("resultsTrophy").textContent  = trophyIcon;
+      document.getElementById("resultsTitle").textContent   = title;
+      document.getElementById("resultsSubtitle").textContent = subtitle;
+
+      const lbl = document.getElementById("scoreLabel");
+      lbl.className = `score-label ${labelClass}`;
+      lbl.textContent = labelText;
+
+      // Category breakdown
+      function setCat(idScore, idPct, cat) {
+        const c = r.categories[cat];
+        document.getElementById(idScore).textContent = `${c.correct}/${c.total}`;
+        const p = c.total > 0 ? Math.round((c.correct / c.total) * 100) : 0;
+        document.getElementById(idPct).textContent = `${p}% correct`;
+      }
+      setCat("bcConj",    "bcConjPct",    "conjugation");
+      setCat("bcVocab",   "bcVocabPct",   "vocab");
+      setCat("bcGrammar", "bcGrammarPct", "grammar");
+
+      // Level
+      const levelMap = {
+        1: ["grass",         "Beginner (A1)",             "You're just getting started — ¡ánimo!"],
+        2: ["import_contacts","Elementary (A2)",           "You know the basics and are building up."],
+        3: ["school",        "Intermediate (B1)",         "You can handle most everyday situations."],
+        4: ["auto_stories",  "Upper-Intermediate (B2)",   "You're handling complex structures well."],
+        5: ["workspace_premium","Advanced (C1/C2)",        "Near-fluent command of Spanish grammar."],
+      };
+      const finalDiff = Math.max(1, Math.min(5, Math.round(
+        r.answers.length > 0
+          ? r.answers.reduce((s, a) => s + a.difficulty, 0) / r.answers.length
+          : 2
+      )));
+      const [lIcon, lName, lDesc] = levelMap[finalDiff];
+      document.getElementById("levelIcon").textContent = lIcon;
+      document.getElementById("levelName").textContent = lName;
+      document.getElementById("levelDesc").textContent = lDesc;
+    }
+
+    async function saveResults(user, results) {
+      const indicator = document.getElementById("savingIndicator");
+      const txt       = document.getElementById("savingText");
+      indicator.classList.add("saving");
+      txt.textContent = "Saving your results…";
+
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          uid:              user.uid,
+          displayName:      user.displayName || "",
+          email:            user.email || "",
+          photoURL:         user.photoURL || "",
+          hasCompletedQuiz: true,
+          quizScore:        results.score,
+          quizTotal:        results.total,
+          quizRaw:          results.raw,
+          quizCategories:   results.categories,
+          quizAnswers:      results.answers,
+          quizTakenAt:      serverTimestamp(),
+        }, { merge: true });
+
+        indicator.classList.remove("saving");
+        txt.innerHTML = `<span class="material-icons-round" style="color:var(--green);font-size:1rem">check_circle</span> Results saved!`;
+      } catch (err) {
+        console.error("Firestore save error:", err);
+        indicator.classList.remove("saving");
+        txt.innerHTML = `<span class="material-icons-round" style="color:var(--red);font-size:1rem">error_outline</span> Couldn't save — check your connection.`;
+      }
+    }
+  </script>
+
+</body>
+</html>
