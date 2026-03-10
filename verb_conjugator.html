@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verb Conjugator · Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #C81C1C;
+      --red-dark: #9e1515;
+      --red-light: rgba(200,28,28,0.08);
+      --bg: #f7f4f1;
+      --white: #ffffff;
+      --dark: #1c1410;
+      --gray: #6b6560;
+      --border: #e8e2dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── PROGRESS STRIP ── */
+    .progress-banner {
+      background: var(--red);
+      color: white;
+      text-align: center;
+      padding: 0.7rem 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+    .progress-banner a {
+      color: white;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.2s;
+    }
+    .progress-banner a:hover { opacity: 0.8; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 38px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+    .nav-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-center a {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+      transition: color 0.2s;
+    }
+    .nav-center a:hover { color: var(--red); }
+    .nav-center a.active { color: var(--red); border-bottom: 2px solid var(--red); padding-bottom: 2px; }
+    .nav-right { display: flex; gap: 0.7rem; align-items: center; }
+    .btn-outline-sm {
+      padding: 0.45rem 1.1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dark);
+      text-decoration: none;
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline-sm:hover { border-color: var(--red); color: var(--red); }
+    .btn-red-sm {
+      padding: 0.45rem 1.2rem;
+      background: var(--red);
+      border: 1.5px solid var(--red);
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-red-sm:hover { background: var(--red-dark); transform: scale(1.03); }
+
+    .material-icons-round {
+      font-size: 1.1em;
+      vertical-align: middle;
+      line-height: 1;
+    }
+
+    /* ── PAGE CONTENT ── */
+    .page-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 5rem;
+    }
+
+    .page-header {
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .page-header .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--red-light);
+      border: 1.5px solid rgba(200,28,28,0.2);
+      color: var(--red);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    .page-header h1 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+      color: var(--gray);
+      font-size: 1rem;
+    }
+
+    /* ── SEARCH CARD ── */
+    .search-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.5s ease 0.1s both;
+    }
+
+    .inputs-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .input-group label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .input-group input,
+    .input-group select {
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--dark);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(200,28,28,0.08);
+    }
+
+    .btn-conjugate {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: 0.78rem 1.6rem;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.97rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 14px rgba(200,28,28,0.25);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-conjugate:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(200,28,28,0.32);
+    }
+
+    .btn-conjugate:active { transform: translateY(0); }
+
+    /* ── RESULT ── */
+    .result-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      display: none;
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .result-card.visible { display: block; }
+
+    .result-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .result-verb {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--red);
+    }
+
+    .result-tense {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gray);
+      background: var(--bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+    }
+
+    .conjugation-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .conj-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .conj-row:hover { border-color: var(--border); }
+
+    .conj-pronoun {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    .conj-form {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* ── ERROR / LOADING ── */
+    .status-msg {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+    }
+
+    .status-msg.visible { display: flex; }
+    .status-msg.error { background: #fef2f2; color: var(--red); border: 1.5px solid rgba(200,28,28,0.2); }
+    .status-msg.loading { background: var(--bg); color: var(--gray); border: 1.5px solid var(--border); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.88rem;
+    }
+    footer strong { color: white; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <!-- PROGRESS STRIP -->
+  <div class="progress-banner">
+    <span class="material-icons-round">location_on</span> See Where You Are &nbsp;·&nbsp; <a href="continue.html">Track your progress →</a>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="bubble.png" alt="Verbito logo" />
+      <span>Verbito</span>
+    </a>
+    <ul class="nav-center">
+      <li><a href="verb_conjugator.html" class="active">Verb Lookup</a></li>
+      <li><a href="continue.html">Quiz</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="continue.html" class="btn-outline-sm">Log In</a>
+      <a href="continue.html" class="btn-red-sm">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <div class="page-header">
+      <div class="tag"><span class="material-icons-round">lock_open</span> Free — No sign-in needed</div>
+      <h1>Verb Conjugator</h1>
+      <p>Enter any Spanish verb and pick a tense to see the full conjugation table.</p>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-card">
+      <div class="inputs-row">
+        <div class="input-group">
+          <label>Verb</label>
+          <input type="text" id="verbInput" placeholder="e.g. hablar, ser, tener…" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="input-group">
+          <label>Tense</label>
+          <select id="tenseSelect">
+            <option value="present">Present (Presente)</option>
+            <option value="preterite">Preterite (Pretérito)</option>
+            <option value="imperfect">Imperfect (Imperfecto)</option>
+            <option value="future">Future (Futuro)</option>
+            <option value="conditional">Conditional (Condicional)</option>
+            <option value="subjunctive">Subjunctive (Subjuntivo)</option>
+          </select>
+        </div>
+        <button class="btn-conjugate" onclick="conjugate()">
+          <span class="material-icons-round">play_arrow</span> Conjugate
+        </button>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-msg loading" id="loadingMsg">
+      <span class="material-icons-round spinning">refresh</span> Looking up conjugations…
+    </div>
+    <div class="status-msg error" id="errorMsg">
+      <span class="material-icons-round">error_outline</span> <span id="errorText">Something went wrong.</span>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-card" id="resultCard">
+      <div class="result-header">
+        <span class="result-verb" id="resultVerb"></span>
+        <span class="result-tense" id="resultTense"></span>
+      </div>
+      <div class="conjugation-table" id="conjugationTable"></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Made with <span class="material-icons-round" style="color:#f87171;font-size:1rem;vertical-align:middle">favorite</span> for Spanish learners · <strong>Verbito</strong></p>
+  </footer>
+
+  <script>
+    const PRONOUNS = {
+      "1s": "yo",
+      "2s": "tú",
+      "3s": "él / ella",
+      "1p": "nosotros",
+      "2p": "vosotros",
+      "3p": "ellos / ellas"
+    };
+
+    const TENSE_LABELS = {
+      present:     "Present · Presente",
+      preterite:   "Preterite · Pretérito",
+      imperfect:   "Imperfect · Imperfecto",
+      future:      "Future · Futuro",
+      conditional: "Conditional · Condicional",
+      subjunctive: "Subjunctive · Subjuntivo"
+    };
+
+    function setStatus(state) {
+      document.getElementById("loadingMsg").classList.toggle("visible", state === "loading");
+      document.getElementById("errorMsg").classList.toggle("visible", state === "error");
+      document.getElementById("resultCard").classList.toggle("visible", state === "result");
+    }
+
+    async function conjugate() {
+      const verb  = document.getElementById("verbInput").value.trim().toLowerCase();
+      const tense = document.getElementById("tenseSelect").value;
+
+      if (!verb) {
+        document.getElementById("errorText").textContent = "Please enter a verb.";
+        setStatus("error");
+        return;
+      }
+
+      setStatus("loading");
+
+      try {
+        const res  = await fetch(`https://api.kidslearninglab.com/conjugate?verb=${encodeURIComponent(verb)}&tense=${tense}`);
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          document.getElementById("errorText").textContent = data.error || "Verb not found.";
+          setStatus("error");
+          return;
+        }
+
+        // Populate result
+        document.getElementById("resultVerb").textContent  = data.verb;
+        document.getElementById("resultTense").textContent = TENSE_LABELS[tense] || tense;
+
+        const table = document.getElementById("conjugationTable");
+        table.innerHTML = "";
+        for (const [key, form] of Object.entries(data.conjugations)) {
+          const pronoun = PRONOUNS[key] || key;
+          table.innerHTML += `
+            <div class="conj-row">
+              <span class="conj-pronoun">${pronoun}</span>
+              <span class="conj-form">${form}</span>
+            </div>`;
+        }
+
+        setStatus("result");
+
+      } catch (err) {
+        document.getElementById("errorText").textContent = "Could not reach the server.";
+        setStatus("error");
+      }
+    }
+
+    // Allow Enter key to trigger
+    document.getElementById("verbInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") conjugate();
+    });
+  </script>
+
+</body>
+</html>
