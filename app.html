@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard · Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #C81C1C;
+      --red-dark: #9e1515;
+      --red-light: rgba(200,28,28,0.08);
+      --bg: #f7f4f1;
+      --white: #ffffff;
+      --dark: #1c1410;
+      --gray: #6b6560;
+      --border: #e8e2dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      /* hide until auth check completes */
+      visibility: hidden;
+    }
+
+    body.ready { visibility: visible; }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 38px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+
+    .nav-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+      transition: color 0.2s;
+    }
+
+    .nav-center a:hover { color: var(--red); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .nav-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      display: none;
+    }
+
+    .nav-avatar-initial {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 2px solid rgba(200,28,28,0.2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--red);
+    }
+
+    .nav-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--dark);
+    }
+
+    .btn-signout {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--gray);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-signout:hover { border-color: var(--red); color: var(--red); }
+
+    .material-icons-round {
+      font-size: 1.1em;
+      vertical-align: middle;
+      line-height: 1;
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="bubble.png" alt="Verbito logo" />
+      <span>Verbito</span>
+    </a>
+    <ul class="nav-center">
+      <li><a href="verb_conjugator.html">Verb Lookup</a></li>
+      <li><a href="#">Quiz</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-avatar-initial" id="navInitial"></div>
+      <img class="nav-avatar" id="navAvatar" src="" alt=""/>
+      <span class="nav-name" id="navName"></span>
+      <button class="btn-signout" id="signOutBtn">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- content goes here later -->
+
+  <script type="module">
+    import { initializeApp }   from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAscnVMEcj-U0wr_uU9cy32S2XGqs7wo34",
+      authDomain: "verbito-9c4c4.firebaseapp.com",
+      projectId: "verbito-9c4c4",
+      storageBucket: "verbito-9c4c4.firebasestorage.app",
+      messagingSenderId: "127778939909",
+      appId: "1:127778939909:web:9ead92ec017c8c2e13a86c",
+      measurementId: "G-52XVNJG3CG"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "continue.html";
+        return;
+      }
+
+      // Show page
+      document.body.classList.add("ready");
+
+      // Populate nav
+      document.getElementById("navName").textContent = user.displayName?.split(" ")[0] || "";
+
+      if (user.photoURL) {
+        const img = document.getElementById("navAvatar");
+        img.src = user.photoURL;
+        img.style.display = "block";
+      } else {
+        const initial = document.getElementById("navInitial");
+        initial.textContent = (user.displayName || "?")[0].toUpperCase();
+        initial.style.display = "flex";
+      }
+
+      document.getElementById("signOutBtn").addEventListener("click", () => {
+        signOut(auth).then(() => window.location.href = "continue.html");
+      });
+    });
+  </script>
+
+</body>
+</html>
