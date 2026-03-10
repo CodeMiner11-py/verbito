@@ -17,340 +17,168 @@
       --gray: #6b6560;
       --border: #e8e2dc;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-      overflow-x: hidden;
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
 
     /* ── PROGRESS STRIP ── */
     .progress-banner {
-      background: var(--red);
-      color: white;
-      text-align: center;
-      padding: 0.7rem 2rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
+      background: var(--red); color: white; text-align: center;
+      padding: 0.7rem 2rem; font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; gap: 0.8rem;
     }
-    .progress-banner a {
-      color: white;
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      transition: opacity 0.2s;
-    }
+    .progress-banner a { color: white; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
     .progress-banner a:hover { opacity: 0.8; }
 
     /* ── NAV ── */
     nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 3rem;
-      background: var(--white);
-      border-bottom: 1.5px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem; background: var(--white);
+      border-bottom: 1.5px solid var(--border); position: sticky; top: 0; z-index: 100;
     }
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
-    }
-    .nav-logo img {
-      height: 38px;
-      animation: wobble 4s ease-in-out infinite;
-    }
-    .nav-logo span {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--red);
-    }
-    .nav-center {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-center a {
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--dark);
-      transition: color 0.2s;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { height: 38px; animation: wobble 4s ease-in-out infinite; }
+    .nav-logo span { font-family: 'Funnel Display', sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--red); }
+    .nav-center { display: flex; gap: 2rem; list-style: none; }
+    .nav-center a { text-decoration: none; font-weight: 600; font-size: 0.95rem; color: var(--dark); transition: color 0.2s; }
     .nav-center a:hover { color: var(--red); }
     .nav-center a.active { color: var(--red); border-bottom: 2px solid var(--red); padding-bottom: 2px; }
     .nav-right { display: flex; gap: 0.7rem; align-items: center; }
     .btn-outline-sm {
-      padding: 0.45rem 1.1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--dark);
-      text-decoration: none;
-      background: transparent;
-      transition: border-color 0.2s, color 0.2s;
+      padding: 0.45rem 1.1rem; border: 1.5px solid var(--border); border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+      color: var(--dark); text-decoration: none; background: transparent; transition: border-color 0.2s, color 0.2s;
     }
     .btn-outline-sm:hover { border-color: var(--red); color: var(--red); }
     .btn-red-sm {
-      padding: 0.45rem 1.2rem;
-      background: var(--red);
-      border: 1.5px solid var(--red);
-      border-radius: 50px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: white;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
+      padding: 0.45rem 1.2rem; background: var(--red); border: 1.5px solid var(--red);
+      border-radius: 50px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;
+      font-size: 0.9rem; color: white; text-decoration: none; transition: background 0.2s, transform 0.2s;
     }
     .btn-red-sm:hover { background: var(--red-dark); transform: scale(1.03); }
+    .material-icons-round { font-size: 1.1em; vertical-align: middle; line-height: 1; }
 
-    .material-icons-round {
-      font-size: 1.1em;
-      vertical-align: middle;
-      line-height: 1;
-    }
+    /* ── PAGE ── */
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3.5rem 2rem 5rem; }
 
-    /* ── PAGE CONTENT ── */
-    .page-wrap {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem 5rem;
-    }
-
-    .page-header {
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.5s ease both;
-    }
-
+    .page-header { margin-bottom: 2.5rem; animation: fadeUp 0.5s ease both; }
     .page-header .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: var(--red-light);
-      border: 1.5px solid rgba(200,28,28,0.2);
-      color: var(--red);
-      font-weight: 700;
-      font-size: 0.78rem;
-      padding: 0.3rem 0.9rem;
-      border-radius: 50px;
-      margin-bottom: 0.9rem;
-      letter-spacing: 0.3px;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--red-light); border: 1.5px solid rgba(200,28,28,0.2);
+      color: var(--red); font-weight: 700; font-size: 0.78rem;
+      padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 0.9rem;
     }
-
-    .page-header h1 {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-    }
-
-    .page-header p {
-      color: var(--gray);
-      font-size: 1rem;
-    }
+    .page-header h1 { font-family: 'Funnel Display', sans-serif; font-size: 2.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .page-header p { color: var(--gray); font-size: 1rem; }
 
     /* ── SEARCH CARD ── */
     .search-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.5s ease 0.1s both;
+      background: white; border: 1.5px solid var(--border); border-radius: 20px;
+      padding: 2rem; margin-bottom: 2rem; animation: fadeUp 0.5s ease 0.1s both;
     }
-
-    .inputs-row {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-end;
+    .inputs-row { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; }
+    .input-group { display: flex; flex-direction: column; gap: 0.45rem; flex: 1; min-width: 160px; }
+    .input-group label { font-size: 0.8rem; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; text-transform: uppercase; }
+    .input-group input, .input-group select {
+      padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.97rem; font-weight: 600;
+      color: var(--dark); background: var(--bg); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none;
     }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      flex: 1;
+    .input-group input:focus, .input-group select:focus {
+      border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,28,28,0.08);
     }
-
-    .input-group label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--gray);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .input-group input,
-    .input-group select {
-      padding: 0.75rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.97rem;
-      font-weight: 600;
-      color: var(--dark);
-      background: var(--bg);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none;
-    }
-
-    .input-group input:focus,
-    .input-group select:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(200,28,28,0.08);
-    }
-
     .btn-conjugate {
-      background: var(--red);
-      color: white;
-      border: none;
-      padding: 0.78rem 1.6rem;
-      border-radius: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      font-size: 0.97rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      box-shadow: 0 4px 14px rgba(200,28,28,0.25);
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      white-space: nowrap;
+      background: var(--red); color: white; border: none; padding: 0.78rem 1.6rem;
+      border-radius: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
+      font-size: 0.97rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+      box-shadow: 0 4px 14px rgba(200,28,28,0.25); transition: background 0.2s, transform 0.2s; white-space: nowrap;
     }
+    .btn-conjugate:hover { background: var(--red-dark); transform: translateY(-1px); }
 
-    .btn-conjugate:hover {
-      background: var(--red-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(200,28,28,0.32);
+    /* ── ERROR ── */
+    .error-msg {
+      display: none; align-items: center; gap: 0.5rem; padding: 0.85rem 1.1rem;
+      border-radius: 12px; font-weight: 600; font-size: 0.92rem; margin-bottom: 1.2rem;
+      background: #fef2f2; color: var(--red); border: 1.5px solid rgba(200,28,28,0.2);
     }
+    .error-msg.visible { display: flex; }
 
-    .btn-conjugate:active { transform: translateY(0); }
-
-    /* ── RESULT ── */
+    /* ── RESULT CARD ── */
     .result-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      display: none;
-      animation: fadeUp 0.35s ease both;
+      display: none; background: white; border: 1.5px solid var(--border);
+      border-radius: 20px; overflow: hidden; animation: fadeUp 0.35s ease both;
     }
-
     .result-card.visible { display: block; }
 
     .result-header {
-      display: flex;
-      align-items: baseline;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.2rem;
-      border-bottom: 1.5px solid var(--border);
+      padding: 1.8rem 2rem 1.4rem; border-bottom: 1.5px solid var(--border);
+      display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
     }
-
-    .result-verb {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 1.9rem;
-      font-weight: 800;
-      color: var(--red);
-    }
-
+    .result-verb { font-family: 'Funnel Display', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--red); }
     .result-tense {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--gray);
-      background: var(--bg);
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      border: 1.5px solid var(--border);
+      font-size: 0.88rem; font-weight: 600; color: var(--gray);
+      background: var(--bg); padding: 0.3rem 0.9rem; border-radius: 50px; border: 1.5px solid var(--border);
     }
-
-    .conjugation-table {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
+    .result-badge {
+      font-size: 0.75rem; font-weight: 700; padding: 0.28rem 0.75rem; border-radius: 50px;
     }
+    .badge-irregular { color: #b45309; background: #fef9c3; border: 1.5px solid #fde68a; }
+    .badge-stem { color: #6d28d9; background: #f5f3ff; border: 1.5px solid #ddd6fe; }
+    .badge-regular { color: #15803d; background: #f0fdf4; border: 1.5px solid #bbf7d0; }
 
-    .conj-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg);
-      border-radius: 10px;
-      padding: 0.7rem 1rem;
-      border: 1.5px solid transparent;
-      transition: border-color 0.2s;
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr { background: var(--dark); }
+    thead th {
+      padding: 0.85rem 1.5rem; text-align: left;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
+    thead th:last-child { text-align: right; }
 
-    .conj-row:hover { border-color: var(--border); }
+    tbody tr { border-bottom: 1.5px solid var(--border); transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(odd) { background: var(--white); }
+    tbody tr:nth-child(even) { background: #faf8f6; }
+    tbody tr:hover { background: rgba(200,28,28,0.03) !important; }
 
-    .conj-pronoun {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--gray);
+    tbody td { padding: 1rem 1.5rem; vertical-align: middle; }
+
+    .td-num { font-size: 0.7rem; font-weight: 700; color: rgba(200,28,28,0.3); width: 32px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .td-pronoun { width: 160px; }
+    .td-pronoun .en { font-size: 0.88rem; font-weight: 600; color: var(--dark); font-family: 'Plus Jakarta Sans', sans-serif; }
+    .td-pronoun .es { font-size: 0.75rem; color: var(--gray); margin-top: 1px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .td-form { font-family: 'Funnel Display', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+    .td-form.is-irregular { color: var(--red); }
+    .td-form.is-stem { color: #6d28d9; }
+    .td-copy { text-align: right; width: 48px; }
+    .copy-btn {
+      background: none; border: none; cursor: pointer; color: var(--border);
+      padding: 0.3rem; border-radius: 6px; transition: color 0.2s, background 0.2s;
+      display: inline-flex; align-items: center;
     }
+    .copy-btn:hover { color: var(--red); background: var(--red-light); }
 
-    .conj-form {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--dark);
+    /* ── TENSE SWITCHER ── */
+    .tense-switcher {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      padding: 1.2rem 1.5rem; border-top: 1.5px solid var(--border); background: var(--bg);
     }
-
-    /* ── ERROR / LOADING ── */
-    .status-msg {
-      display: none;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem 1.2rem;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.92rem;
-      margin-bottom: 1rem;
+    .tense-pill {
+      padding: 0.35rem 0.9rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700;
+      border: 1.5px solid var(--border); background: white; color: var(--gray);
+      cursor: pointer; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif;
     }
+    .tense-pill:hover { border-color: var(--red); color: var(--red); }
+    .tense-pill.active { background: var(--red); color: white; border-color: var(--red); }
 
-    .status-msg.visible { display: flex; }
-    .status-msg.error { background: #fef2f2; color: var(--red); border: 1.5px solid rgba(200,28,28,0.2); }
-    .status-msg.loading { background: var(--bg); color: var(--gray); border: 1.5px solid var(--border); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--dark);
-      color: rgba(255,255,255,0.4);
-      text-align: center;
-      padding: 1.8rem;
-      font-size: 0.88rem;
-    }
+    footer { background: var(--dark); color: rgba(255,255,255,0.4); text-align: center; padding: 1.8rem; font-size: 0.88rem; }
     footer strong { color: white; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes wobble {
-      0%, 100% { transform: rotate(-3deg); }
-      50%       { transform: rotate(3deg); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes wobble { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
   </style>
 </head>
 <body>
@@ -395,12 +223,12 @@
         <div class="input-group">
           <label>Tense</label>
           <select id="tenseSelect">
-            <option value="present">Present (Presente)</option>
-            <option value="preterite">Preterite (Pretérito)</option>
-            <option value="imperfect">Imperfect (Imperfecto)</option>
-            <option value="future">Future (Futuro)</option>
-            <option value="conditional">Conditional (Condicional)</option>
-            <option value="subjunctive">Subjunctive (Subjuntivo)</option>
+            <option value="present">Present · Presente</option>
+            <option value="preterite">Preterite · Pretérito</option>
+            <option value="imperfect">Imperfect · Imperfecto</option>
+            <option value="future">Future · Futuro</option>
+            <option value="conditional">Conditional · Condicional</option>
+            <option value="subjunctive">Subjunctive · Subjuntivo</option>
           </select>
         </div>
         <button class="btn-conjugate" onclick="conjugate()">
@@ -409,12 +237,10 @@
       </div>
     </div>
 
-    <!-- STATUS -->
-    <div class="status-msg loading" id="loadingMsg">
-      <span class="material-icons-round spinning">refresh</span> Looking up conjugations…
-    </div>
-    <div class="status-msg error" id="errorMsg">
-      <span class="material-icons-round">error_outline</span> <span id="errorText">Something went wrong.</span>
+    <!-- ERROR -->
+    <div class="error-msg" id="errorMsg">
+      <span class="material-icons-round">error_outline</span>
+      <span id="errorText">Verb not found.</span>
     </div>
 
     <!-- RESULT -->
@@ -422,8 +248,10 @@
       <div class="result-header">
         <span class="result-verb" id="resultVerb"></span>
         <span class="result-tense" id="resultTense"></span>
+        <span class="result-badge" id="resultBadge"></span>
       </div>
-      <div class="conjugation-table" id="conjugationTable"></div>
+      <div id="tableWrap"></div>
+      <div class="tense-switcher" id="tenseSwitcher"></div>
     </div>
 
   </div>
@@ -434,14 +262,18 @@
   </footer>
 
   <script>
-    const PRONOUNS = {
-      "1s": "yo",
-      "2s": "tú",
-      "3s": "él / ella",
-      "1p": "nosotros",
-      "2p": "vosotros",
-      "3p": "ellos / ellas"
-    };
+    // ═══════════════════════════════════════════════════
+    // PLACEHOLDER — paste conjugation engine here later
+    // ═══════════════════════════════════════════════════
+
+    const PRONOUNS = [
+      { en: "I",          es: "yo" },
+      { en: "You",        es: "tú" },
+      { en: "He / She",   es: "él / ella" },
+      { en: "We",         es: "nosotros" },
+      { en: "You all",    es: "vosotros" },
+      { en: "They",       es: "ellos / ellas" },
+    ];
 
     const TENSE_LABELS = {
       present:     "Present · Presente",
@@ -449,64 +281,742 @@
       imperfect:   "Imperfect · Imperfecto",
       future:      "Future · Futuro",
       conditional: "Conditional · Condicional",
-      subjunctive: "Subjunctive · Subjuntivo"
+      subjunctive: "Subjunctive · Subjuntivo",
     };
 
-    function setStatus(state) {
-      document.getElementById("loadingMsg").classList.toggle("visible", state === "loading");
-      document.getElementById("errorMsg").classList.toggle("visible", state === "error");
-      document.getElementById("resultCard").classList.toggle("visible", state === "result");
-    }
+    let currentVerb = "";
 
-    async function conjugate() {
+    function conjugate() {
       const verb  = document.getElementById("verbInput").value.trim().toLowerCase();
       const tense = document.getElementById("tenseSelect").value;
+      if (!verb) { showError("Please enter a verb."); return; }
 
-      if (!verb) {
-        document.getElementById("errorText").textContent = "Please enter a verb.";
-        setStatus("error");
-        return;
-      }
+      // TODO: call conjugation engine here
+      const result = getConjugations(verb, tense); // returns { forms: [...6], type: "regular"|"irregular"|"stem" } or null
 
-      setStatus("loading");
+      if (!result) { showError(`"${verb}" not recognised. Try a common verb like hablar, ser, or tener.`); return; }
 
-      try {
-        const res  = await fetch(`https://api.kidslearninglab.com/conjugate?verb=${encodeURIComponent(verb)}&tense=${tense}`);
-        const data = await res.json();
-
-        if (!res.ok || data.error) {
-          document.getElementById("errorText").textContent = data.error || "Verb not found.";
-          setStatus("error");
-          return;
-        }
-
-        // Populate result
-        document.getElementById("resultVerb").textContent  = data.verb;
-        document.getElementById("resultTense").textContent = TENSE_LABELS[tense] || tense;
-
-        const table = document.getElementById("conjugationTable");
-        table.innerHTML = "";
-        for (const [key, form] of Object.entries(data.conjugations)) {
-          const pronoun = PRONOUNS[key] || key;
-          table.innerHTML += `
-            <div class="conj-row">
-              <span class="conj-pronoun">${pronoun}</span>
-              <span class="conj-form">${form}</span>
-            </div>`;
-        }
-
-        setStatus("result");
-
-      } catch (err) {
-        document.getElementById("errorText").textContent = "Could not reach the server.";
-        setStatus("error");
-      }
+      hideError();
+      renderTable(verb, tense, result);
     }
 
-    // Allow Enter key to trigger
+    function renderTable(verb, tense, result) {
+      document.getElementById("resultVerb").textContent  = verb;
+      document.getElementById("resultTense").textContent = TENSE_LABELS[tense];
+
+      const badge = document.getElementById("resultBadge");
+      if (result.type === "irregular") { badge.textContent = "Irregular"; badge.className = "result-badge badge-irregular"; }
+      else if (result.type === "stem")  { badge.textContent = "Stem-changing"; badge.className = "result-badge badge-stem"; }
+      else                              { badge.textContent = "Regular"; badge.className = "result-badge badge-regular"; }
+
+      const wrap = document.getElementById("tableWrap");
+      wrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Pronoun</th>
+              <th>Conjugation</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${result.forms.map((form, i) => `
+              <tr>
+                <td class="td-num">${i + 1}</td>
+                <td class="td-pronoun">
+                  <span class="en">${PRONOUNS[i].en}</span>
+                  <span class="es">${PRONOUNS[i].es}</span>
+                </td>
+                <td class="td-form ${result.type !== 'regular' ? 'is-' + result.type : ''}">${form}</td>
+                <td class="td-copy">
+                  <button class="copy-btn" onclick="copyForm('${form}')" title="Copy">
+                    <span class="material-icons-round" style="font-size:1rem">content_copy</span>
+                  </button>
+                </td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+
+      // Tense switcher
+      const switcher = document.getElementById("tenseSwitcher");
+      switcher.innerHTML = Object.entries(TENSE_LABELS).map(([key, label]) =>
+        `<button class="tense-pill ${key === tense ? 'active' : ''}" onclick="switchTense('${key}')">${label.split(" · ")[0]}</button>`
+      ).join("");
+
+      document.getElementById("resultCard").classList.add("visible");
+      currentVerb = verb;
+    }
+
+    function switchTense(tense) {
+      document.getElementById("tenseSelect").value = tense;
+      conjugate();
+    }
+
+    function copyForm(form) {
+      navigator.clipboard.writeText(form);
+    }
+
+    function showError(msg) {
+      document.getElementById("errorText").textContent = msg;
+      document.getElementById("errorMsg").classList.add("visible");
+      document.getElementById("resultCard").classList.remove("visible");
+    }
+
+    function hideError() {
+      document.getElementById("errorMsg").classList.remove("visible");
+    }
+
     document.getElementById("verbInput").addEventListener("keydown", e => {
       if (e.key === "Enter") conjugate();
     });
+
+// ═══════════════════════════════════════════════════════════════════
+// VERBITO CONJUGATION ENGINE
+// Replace the placeholder getConjugations() function with this entire block
+// ═══════════════════════════════════════════════════════════════════
+
+// ── STEM-CHANGE GROUPS ──────────────────────────────────────────────
+// e→ie (present only, all except nosotros/vosotros)
+const STEM_E_IE = new Set([
+  "querer","pensar","perder","sentir","preferir","mentir","entender",
+  "comenzar","empezar","cerrar","despertar","acertar","apretar","atravesar",
+  "calentar","confesar","defender","encender","extender","fregar","gobernar",
+  "helar","negar","nevar","recomendar","regar","sentar","temblar","tropezar",
+  "verter","convertir","divertir","hervir","invertir","advertir","arrepentir",
+  "consentir","presentir","requerir","sugerir","competir"
+]);
+
+// o→ue (present only, all except nosotros/vosotros)
+const STEM_O_UE = new Set([
+  "poder","volver","dormir","morir","encontrar","recordar","contar","mostrar",
+  "probar","resolver","mover","devolver","envolver","revolver","absolver",
+  "cocer","coger","escocer","llover","oler","soler","sonar","tostar","volar",
+  "almorzar","aprobar","colgar","comprobar","concordar","consolar","costar",
+  "demoler","descolgar","disolver","doler","esforzar","forzar","jugar",
+  "morder","poblar","promover","remover","renovar","rodar","rogar","soltar",
+  "torcer","tronar","avoler"
+]);
+
+// e→i (present + preterite 3rd person)
+const STEM_E_I = new Set([
+  "pedir","servir","repetir","seguir","vestir","medir","reír","freír",
+  "elegir","corregir","bendecir","despedir","impedir","perseguir","rendir",
+  "conseguir","gemir","gruñir","henchir","sonreír","teñir","ceñir"
+]);
+
+// u→ue (jugar only)
+const STEM_U_UE = new Set(["jugar"]);
+
+function getStemChangeType(verb) {
+  if (STEM_U_UE.has(verb)) return "u_ue";
+  if (STEM_E_IE.has(verb)) return "e_ie";
+  if (STEM_O_UE.has(verb)) return "o_ue";
+  if (STEM_E_I.has(verb))  return "e_i";
+  return null;
+}
+
+function applyStemChange(stem, type, personIndex) {
+  // nosotros (3) and vosotros (4) don't change in present
+  const changes = [0,1,2,5]; // yo, tú, él, ellos
+  if (!changes.includes(personIndex)) return stem;
+  if (type === "e_ie") return stem.replace(/e(?=[^aeiou]*$)/, "ie");
+  if (type === "o_ue") return stem.replace(/o(?=[^aeiou]*$)/, "ue");
+  if (type === "e_i")  return stem.replace(/e(?=[^aeiou]*$)/, "i");
+  if (type === "u_ue") return stem.replace(/u(?=[^aeiou]*$)/, "ue");
+  return stem;
+}
+
+// ── IRREGULAR VERB TABLE ─────────────────────────────────────────────
+// Format: verb → { tense: [yo, tú, él, nosotros, vosotros, ellos] }
+const IRREGULARS = {
+
+  // ── SER ──
+  ser: {
+    present:     ["soy","eres","es","somos","sois","son"],
+    preterite:   ["fui","fuiste","fue","fuimos","fuisteis","fueron"],
+    imperfect:   ["era","eras","era","éramos","erais","eran"],
+    future:      ["seré","serás","será","seremos","seréis","serán"],
+    conditional: ["sería","serías","sería","seríamos","seríais","serían"],
+    subjunctive: ["sea","seas","sea","seamos","seáis","sean"],
+  },
+
+  // ── ESTAR ──
+  estar: {
+    present:     ["estoy","estás","está","estamos","estáis","están"],
+    preterite:   ["estuve","estuviste","estuvo","estuvimos","estuvisteis","estuvieron"],
+    imperfect:   ["estaba","estabas","estaba","estábamos","estabais","estaban"],
+    future:      ["estaré","estarás","estará","estaremos","estaréis","estarán"],
+    conditional: ["estaría","estarías","estaría","estaríamos","estaríais","estarían"],
+    subjunctive: ["esté","estés","esté","estemos","estéis","estén"],
+  },
+
+  // ── IR ──
+  ir: {
+    present:     ["voy","vas","va","vamos","vais","van"],
+    preterite:   ["fui","fuiste","fue","fuimos","fuisteis","fueron"],
+    imperfect:   ["iba","ibas","iba","íbamos","ibais","iban"],
+    future:      ["iré","irás","irá","iremos","iréis","irán"],
+    conditional: ["iría","irías","iría","iríamos","iríais","irían"],
+    subjunctive: ["vaya","vayas","vaya","vayamos","vayáis","vayan"],
+  },
+
+  // ── TENER ──
+  tener: {
+    present:     ["tengo","tienes","tiene","tenemos","tenéis","tienen"],
+    preterite:   ["tuve","tuviste","tuvo","tuvimos","tuvisteis","tuvieron"],
+    imperfect:   ["tenía","tenías","tenía","teníamos","teníais","tenían"],
+    future:      ["tendré","tendrás","tendrá","tendremos","tendréis","tendrán"],
+    conditional: ["tendría","tendrías","tendría","tendríamos","tendríais","tendrían"],
+    subjunctive: ["tenga","tengas","tenga","tengamos","tengáis","tengan"],
+  },
+
+  // ── HACER ──
+  hacer: {
+    present:     ["hago","haces","hace","hacemos","hacéis","hacen"],
+    preterite:   ["hice","hiciste","hizo","hicimos","hicisteis","hicieron"],
+    imperfect:   ["hacía","hacías","hacía","hacíamos","hacíais","hacían"],
+    future:      ["haré","harás","hará","haremos","haréis","harán"],
+    conditional: ["haría","harías","haría","haríamos","haríais","harían"],
+    subjunctive: ["haga","hagas","haga","hagamos","hagáis","hagan"],
+  },
+
+  // ── DECIR ──
+  decir: {
+    present:     ["digo","dices","dice","decimos","decís","dicen"],
+    preterite:   ["dije","dijiste","dijo","dijimos","dijisteis","dijeron"],
+    imperfect:   ["decía","decías","decía","decíamos","decíais","decían"],
+    future:      ["diré","dirás","dirá","diremos","diréis","dirán"],
+    conditional: ["diría","dirías","diría","diríamos","diríais","dirían"],
+    subjunctive: ["diga","digas","diga","digamos","digáis","digan"],
+  },
+
+  // ── SABER ──
+  saber: {
+    present:     ["sé","sabes","sabe","sabemos","sabéis","saben"],
+    preterite:   ["supe","supiste","supo","supimos","supisteis","supieron"],
+    imperfect:   ["sabía","sabías","sabía","sabíamos","sabíais","sabían"],
+    future:      ["sabré","sabrás","sabrá","sabremos","sabréis","sabrán"],
+    conditional: ["sabría","sabrías","sabría","sabríamos","sabríais","sabrían"],
+    subjunctive: ["sepa","sepas","sepa","sepamos","sepáis","sepan"],
+  },
+
+  // ── VENIR ──
+  venir: {
+    present:     ["vengo","vienes","viene","venimos","venís","vienen"],
+    preterite:   ["vine","viniste","vino","vinimos","vinisteis","vinieron"],
+    imperfect:   ["venía","venías","venía","veníamos","veníais","venían"],
+    future:      ["vendré","vendrás","vendrá","vendremos","vendréis","vendrán"],
+    conditional: ["vendría","vendrías","vendría","vendríamos","vendríais","vendrían"],
+    subjunctive: ["venga","vengas","venga","vengamos","vengáis","vengan"],
+  },
+
+  // ── PONER ──
+  poner: {
+    present:     ["pongo","pones","pone","ponemos","ponéis","ponen"],
+    preterite:   ["puse","pusiste","puso","pusimos","pusisteis","pusieron"],
+    imperfect:   ["ponía","ponías","ponía","poníamos","poníais","ponían"],
+    future:      ["pondré","pondrás","pondrá","pondremos","pondréis","pondrán"],
+    conditional: ["pondría","pondrías","pondría","pondríamos","pondríais","pondrían"],
+    subjunctive: ["ponga","pongas","ponga","pongamos","pongáis","pongan"],
+  },
+
+  // ── TRAER ──
+  traer: {
+    present:     ["traigo","traes","trae","traemos","traéis","traen"],
+    preterite:   ["traje","trajiste","trajo","trajimos","trajisteis","trajeron"],
+    imperfect:   ["traía","traías","traía","traíamos","traíais","traían"],
+    future:      ["traeré","traerás","traerá","traeremos","traeréis","traerán"],
+    conditional: ["traería","traerías","traería","traeríamos","traeríais","traerían"],
+    subjunctive: ["traiga","traigas","traiga","traigamos","traigáis","traigan"],
+  },
+
+  // ── SALIR ──
+  salir: {
+    present:     ["salgo","sales","sale","salimos","salís","salen"],
+    preterite:   ["salí","saliste","salió","salimos","salisteis","salieron"],
+    imperfect:   ["salía","salías","salía","salíamos","salíais","salían"],
+    future:      ["saldré","saldrás","saldrá","saldremos","saldréis","saldrán"],
+    conditional: ["saldría","saldrías","saldría","saldríamos","saldríais","saldrían"],
+    subjunctive: ["salga","salgas","salga","salgamos","salgáis","salgan"],
+  },
+
+  // ── VER ──
+  ver: {
+    present:     ["veo","ves","ve","vemos","veis","ven"],
+    preterite:   ["vi","viste","vio","vimos","visteis","vieron"],
+    imperfect:   ["veía","veías","veía","veíamos","veíais","veían"],
+    future:      ["veré","verás","verá","veremos","veréis","verán"],
+    conditional: ["vería","verías","vería","veríamos","veríais","verían"],
+    subjunctive: ["vea","veas","vea","veamos","veáis","vean"],
+  },
+
+  // ── DAR ──
+  dar: {
+    present:     ["doy","das","da","damos","dais","dan"],
+    preterite:   ["di","diste","dio","dimos","disteis","dieron"],
+    imperfect:   ["daba","dabas","daba","dábamos","dabais","daban"],
+    future:      ["daré","darás","dará","daremos","daréis","darán"],
+    conditional: ["daría","darías","daría","daríamos","daríais","darían"],
+    subjunctive: ["dé","des","dé","demos","deis","den"],
+  },
+
+  // ── HABER ──
+  haber: {
+    present:     ["he","has","ha","hemos","habéis","han"],
+    preterite:   ["hube","hubiste","hubo","hubimos","hubisteis","hubieron"],
+    imperfect:   ["había","habías","había","habíamos","habíais","habían"],
+    future:      ["habré","habrás","habrá","habremos","habréis","habrán"],
+    conditional: ["habría","habrías","habría","habríamos","habríais","habrían"],
+    subjunctive: ["haya","hayas","haya","hayamos","hayáis","hayan"],
+  },
+
+  // ── PODER ──
+  poder: {
+    present:     ["puedo","puedes","puede","podemos","podéis","pueden"],
+    preterite:   ["pude","pudiste","pudo","pudimos","pudisteis","pudieron"],
+    imperfect:   ["podía","podías","podía","podíamos","podíais","podían"],
+    future:      ["podré","podrás","podrá","podremos","podréis","podrán"],
+    conditional: ["podría","podrías","podría","podríamos","podríais","podrían"],
+    subjunctive: ["pueda","puedas","pueda","podamos","podáis","puedan"],
+  },
+
+  // ── QUERER ──
+  querer: {
+    present:     ["quiero","quieres","quiere","queremos","queréis","quieren"],
+    preterite:   ["quise","quisiste","quiso","quisimos","quisisteis","quisieron"],
+    imperfect:   ["quería","querías","quería","queríamos","queríais","querían"],
+    future:      ["querré","querrás","querrá","querremos","querréis","querrán"],
+    conditional: ["querría","querrías","querría","querríamos","querríais","querrían"],
+    subjunctive: ["quiera","quieras","quiera","queramos","queráis","quieran"],
+  },
+
+  // ── CABER ──
+  caber: {
+    present:     ["quepo","cabes","cabe","cabemos","cabéis","caben"],
+    preterite:   ["cupe","cupiste","cupo","cupimos","cupisteis","cupieron"],
+    imperfect:   ["cabía","cabías","cabía","cabíamos","cabíais","cabían"],
+    future:      ["cabré","cabrás","cabrá","cabremos","cabréis","cabrán"],
+    conditional: ["cabría","cabrías","cabría","cabríamos","cabríais","cabrían"],
+    subjunctive: ["quepa","quepas","quepa","quepamos","quepáis","quepan"],
+  },
+
+  // ── VALER ──
+  valer: {
+    present:     ["valgo","vales","vale","valemos","valéis","valen"],
+    preterite:   ["valí","valiste","valió","valimos","valisteis","valieron"],
+    imperfect:   ["valía","valías","valía","valíamos","valíais","valían"],
+    future:      ["valdré","valdrás","valdrá","valdremos","valdréis","valdrán"],
+    conditional: ["valdría","valdrías","valdría","valdríamos","valdríais","valdrían"],
+    subjunctive: ["valga","valgas","valga","valgamos","valgáis","valgan"],
+  },
+
+  // ── OÍR ──
+  oír: {
+    present:     ["oigo","oyes","oye","oímos","oís","oyen"],
+    preterite:   ["oí","oíste","oyó","oímos","oísteis","oyeron"],
+    imperfect:   ["oía","oías","oía","oíamos","oíais","oían"],
+    future:      ["oiré","oirás","oirá","oiremos","oiréis","oirán"],
+    conditional: ["oiría","oirías","oiría","oiríamos","oiríais","oirían"],
+    subjunctive: ["oiga","oigas","oiga","oigamos","oigáis","oigan"],
+  },
+
+  // ── CAER ──
+  caer: {
+    present:     ["caigo","caes","cae","caemos","caéis","caen"],
+    preterite:   ["caí","caíste","cayó","caímos","caísteis","cayeron"],
+    imperfect:   ["caía","caías","caía","caíamos","caíais","caían"],
+    future:      ["caeré","caerás","caerá","caeremos","caeréis","caerán"],
+    conditional: ["caería","caerías","caería","caeríamos","caeríais","caerían"],
+    subjunctive: ["caiga","caigas","caiga","caigamos","caigáis","caigan"],
+  },
+
+  // ── CONDUCIR ──
+  conducir: {
+    present:     ["conduzco","conduces","conduce","conducimos","conducís","conducen"],
+    preterite:   ["conduje","condujiste","condujo","condujimos","condujisteis","condujeron"],
+    imperfect:   ["conducía","conducías","conducía","conducíamos","conducíais","conducían"],
+    future:      ["conduciré","conducirás","conducirá","conduciremos","conduciréis","conducirán"],
+    conditional: ["conduciría","conducirías","conduciría","conduciríamos","conduciríais","conducirían"],
+    subjunctive: ["conduzca","conduzcas","conduzca","conduzcamos","conduzcáis","conduzcan"],
+  },
+
+  // ── TRADUCIR ──
+  traducir: {
+    present:     ["traduzco","traduces","traduce","traducimos","traducís","traducen"],
+    preterite:   ["traduje","tradujiste","tradujo","tradujimos","tradujisteis","tradujeron"],
+    imperfect:   ["traducía","traducías","traducía","traducíamos","traducíais","traducían"],
+    future:      ["traduciré","traducirás","traducirá","traduciremos","traduciréis","traducirán"],
+    conditional: ["traduciría","traducirías","traduciría","traduciríamos","traduciríais","traducirían"],
+    subjunctive: ["traduzca","traduzcas","traduzca","traduzcamos","traduzcáis","traduzcan"],
+  },
+
+  // ── PRODUCIR ──
+  producir: {
+    present:     ["produzco","produces","produce","producimos","producís","producen"],
+    preterite:   ["produje","produjiste","produjo","produjimos","produjisteis","produjeron"],
+    imperfect:   ["producía","producías","producía","producíamos","producíais","producían"],
+    future:      ["produciré","producirás","producirá","produciremos","produciréis","producirán"],
+    conditional: ["produciría","producirías","produciría","produciríamos","produciríais","producirían"],
+    subjunctive: ["produzca","produzcas","produzca","produzcamos","produzcáis","produzcan"],
+  },
+
+  // ── CONSTRUIR ──
+  construir: {
+    present:     ["construyo","construyes","construye","construimos","construís","construyen"],
+    preterite:   ["construí","construiste","construyó","construimos","construisteis","construyeron"],
+    imperfect:   ["construía","construías","construía","construíamos","construíais","construían"],
+    future:      ["construiré","construirás","construirá","construiremos","construiréis","construirán"],
+    conditional: ["construiría","construirías","construiría","construiríamos","construiríais","construirían"],
+    subjunctive: ["construya","construyas","construya","construyamos","construyáis","construyan"],
+  },
+
+  // ── HUIR ──
+  huir: {
+    present:     ["huyo","huyes","huye","huimos","huís","huyen"],
+    preterite:   ["huí","huiste","huyó","huimos","huisteis","huyeron"],
+    imperfect:   ["huía","huías","huía","huíamos","huíais","huían"],
+    future:      ["huiré","huirás","huirá","huiremos","huiréis","huirán"],
+    conditional: ["huiría","huirías","huiría","huiríamos","huiríais","huirían"],
+    subjunctive: ["huya","huyas","huya","huyamos","huyáis","huyan"],
+  },
+
+  // ── INCLUIR ──
+  incluir: {
+    present:     ["incluyo","incluyes","incluye","incluimos","incluís","incluyen"],
+    preterite:   ["incluí","incluiste","incluyó","incluimos","incluisteis","incluyeron"],
+    imperfect:   ["incluía","incluías","incluía","incluíamos","incluíais","incluían"],
+    future:      ["incluiré","incluirás","incluirá","incluiremos","incluiréis","incluirán"],
+    conditional: ["incluiría","incluirías","incluiría","incluiríamos","incluiríais","incluirían"],
+    subjunctive: ["incluya","incluyas","incluya","incluyamos","incluyáis","incluyan"],
+  },
+
+  // ── CONOCER ──
+  conocer: {
+    present:     ["conozco","conoces","conoce","conocemos","conocéis","conocen"],
+    preterite:   ["conocí","conociste","conoció","conocimos","conocisteis","conocieron"],
+    imperfect:   ["conocía","conocías","conocía","conocíamos","conocíais","conocían"],
+    future:      ["conoceré","conocerás","conocerá","conoceremos","conoceréis","conocerán"],
+    conditional: ["conocería","conocerías","conocería","conoceríamos","conoceríais","conocerían"],
+    subjunctive: ["conozca","conozcas","conozca","conozcamos","conozcáis","conozcan"],
+  },
+
+  // ── APARECER ──
+  aparecer: {
+    present:     ["aparezco","apareces","aparece","aparecemos","aparecéis","aparecen"],
+    preterite:   ["aparecí","apareciste","apareció","aparecimos","aparecisteis","aparecieron"],
+    imperfect:   ["aparecía","aparecías","aparecía","aparecíamos","aparecíais","aparecían"],
+    future:      ["apareceré","aparecerás","aparecerá","apareceremos","apareceréis","aparecerán"],
+    conditional: ["aparecería","aparecerías","aparecería","apareceríamos","apareceríais","aparecerían"],
+    subjunctive: ["aparezca","aparezcas","aparezca","aparezcamos","aparezcáis","aparezcan"],
+  },
+
+  // ── PERTENECER ──
+  pertenecer: {
+    present:     ["pertenezco","perteneces","pertenece","pertenecemos","pertenecéis","pertenecen"],
+    preterite:   ["pertenecí","perteneciste","perteneció","pertenecimos","pertenecisteis","pertenecieron"],
+    imperfect:   ["pertenecía","pertenecías","pertenecía","pertenecíamos","pertenecíais","pertenecían"],
+    future:      ["perteneceré","pertenecerás","pertenecerá","perteneceremos","perteneceréis","pertenecerán"],
+    conditional: ["pertenecería","pertenecerías","pertenecería","perteneceríamos","perteneceríais","pertenecerían"],
+    subjunctive: ["pertenezca","pertenezcas","pertenezca","pertenezcamos","pertenezcáis","pertenezcan"],
+  },
+
+  // ── OBTENER ──
+  obtener: {
+    present:     ["obtengo","obtienes","obtiene","obtenemos","obtenéis","obtienen"],
+    preterite:   ["obtuve","obtuviste","obtuvo","obtuvimos","obtuvisteis","obtuvieron"],
+    imperfect:   ["obtenía","obtenías","obtenía","obteníamos","obteníais","obtenían"],
+    future:      ["obtendré","obtendrás","obtendrá","obtendremos","obtendréis","obtendrán"],
+    conditional: ["obtendría","obtendrías","obtendría","obtendríamos","obtendríais","obtendrían"],
+    subjunctive: ["obtenga","obtengas","obtenga","obtengamos","obtengáis","obtengan"],
+  },
+
+  // ── MANTENER ──
+  mantener: {
+    present:     ["mantengo","mantienes","mantiene","mantenemos","mantenéis","mantienen"],
+    preterite:   ["mantuve","mantuviste","mantuvo","mantuvimos","mantuvisteis","mantuvieron"],
+    imperfect:   ["mantenía","mantenías","mantenía","manteníamos","manteníais","mantenían"],
+    future:      ["mantendré","mantendrás","mantendrá","mantendremos","mantendréis","mantendrán"],
+    conditional: ["mantendría","mantendrías","mantendría","mantendríamos","mantendríais","mantendrían"],
+    subjunctive: ["mantenga","mantengas","mantenga","mantengamos","mantengáis","mantengan"],
+  },
+
+  // ── CONTENER ──
+  contener: {
+    present:     ["contengo","contienes","contiene","contenemos","contenéis","contienen"],
+    preterite:   ["contuve","contuviste","contuvo","contuvimos","contuvisteis","contuvieron"],
+    imperfect:   ["contenía","contenías","contenía","conteniamos","conteníais","contenían"],
+    future:      ["contendré","contendrás","contendrá","contendremos","contendréis","contendrán"],
+    conditional: ["contendría","contendrías","contendría","contendríamos","contendríais","contendrían"],
+    subjunctive: ["contenga","contengas","contenga","contengamos","contengáis","contengan"],
+  },
+
+  // ── SUPONER ──
+  suponer: {
+    present:     ["supongo","supones","supone","suponemos","suponéis","suponen"],
+    preterite:   ["supuse","supusiste","supuso","supusimos","supusisteis","supusieron"],
+    imperfect:   ["suponía","suponías","suponía","suponíamos","suponíais","suponían"],
+    future:      ["supondré","supondrás","supondrá","supondremos","supondréis","supondrán"],
+    conditional: ["supondría","supondrías","supondría","supondríamos","supondríais","supondrían"],
+    subjunctive: ["suponga","supongas","suponga","supongamos","supongáis","supongan"],
+  },
+
+  // ── COMPONER ──
+  componer: {
+    present:     ["compongo","compones","compone","componemos","componéis","componen"],
+    preterite:   ["compuse","compusiste","compuso","compusimos","compusisteis","compusieron"],
+    imperfect:   ["componía","componías","componía","componíamos","componíais","componían"],
+    future:      ["compondré","compondrás","compondrá","compondremos","compondréis","compondrán"],
+    conditional: ["compondría","compondrías","compondría","compondríamos","compondríais","compondrían"],
+    subjunctive: ["componga","compongas","componga","compongamos","compongáis","compongan"],
+  },
+
+  // ── PROPONER ──
+  proponer: {
+    present:     ["propongo","propones","propone","proponemos","proponéis","proponen"],
+    preterite:   ["propuse","propusiste","propuso","propusimos","propusisteis","propusieron"],
+    imperfect:   ["proponía","proponías","proponía","proponíamos","proponíais","proponían"],
+    future:      ["propondré","propondrás","propondrá","propondremos","propondréis","propondrán"],
+    conditional: ["propondría","propondrías","propondría","propondríamos","propondríais","propondrían"],
+    subjunctive: ["proponga","propongas","proponga","propongamos","propongáis","propongan"],
+  },
+
+  // ── DETENER ──
+  detener: {
+    present:     ["detengo","detienes","detiene","detenemos","detenéis","detienen"],
+    preterite:   ["detuve","detuviste","detuvo","detuvimos","detuvisteis","detuvieron"],
+    imperfect:   ["detenía","detenías","detenía","deteniamos","deteníais","detenían"],
+    future:      ["detendré","detendrás","detendrá","detendremos","detendréis","detendrán"],
+    conditional: ["detendría","detendrías","detendría","detendríamos","detendríais","detendrían"],
+    subjunctive: ["detenga","detengas","detenga","detengamos","detengáis","detengan"],
+  },
+
+  // ── PODER (already above but also stem-changing, handled via IRREGULARS) ──
+
+  // ── ANDAR ──
+  andar: {
+    present:     ["ando","andas","anda","andamos","andáis","andan"],
+    preterite:   ["anduve","anduviste","anduvo","anduvimos","anduvisteis","anduvieron"],
+    imperfect:   ["andaba","andabas","andaba","andábamos","andabais","andaban"],
+    future:      ["andaré","andarás","andará","andaremos","andaréis","andarán"],
+    conditional: ["andaría","andarías","andaría","andaríamos","andaríais","andarían"],
+    subjunctive: ["ande","andes","ande","andemos","andéis","anden"],
+  },
+
+  // ── REÍR ──
+  reír: {
+    present:     ["río","ríes","ríe","reímos","reís","ríen"],
+    preterite:   ["reí","reíste","rió","reímos","reísteis","rieron"],
+    imperfect:   ["reía","reías","reía","reíamos","reíais","reían"],
+    future:      ["reiré","reirás","reirá","reiremos","reiréis","reirán"],
+    conditional: ["reiría","reirías","reiría","reiríamos","reiríais","reirían"],
+    subjunctive: ["ría","rías","ría","riamos","riáis","rían"],
+  },
+
+  // ── SONREÍR ──
+  sonreír: {
+    present:     ["sonrío","sonríes","sonríe","sonreímos","sonreís","sonríen"],
+    preterite:   ["sonreí","sonreíste","sonrió","sonreímos","sonreísteis","sonrieron"],
+    imperfect:   ["sonreía","sonreías","sonreía","sonreíamos","sonreíais","sonreían"],
+    future:      ["sonreiré","sonreirás","sonreirá","sonreiremos","sonreiréis","sonreirán"],
+    conditional: ["sonreiría","sonreirías","sonreiría","sonreiríamos","sonreiríais","sonreirían"],
+    subjunctive: ["sonría","sonrías","sonría","sonriamos","sonriáis","sonrían"],
+  },
+
+  // ── FREÍR ──
+  freír: {
+    present:     ["frío","fríes","fríe","freímos","freís","fríen"],
+    preterite:   ["freí","freíste","frió","freímos","freísteis","frieron"],
+    imperfect:   ["freía","freías","freía","freíamos","freíais","freían"],
+    future:      ["freiré","freirás","freirá","freiremos","freiréis","freirán"],
+    conditional: ["freiría","freirías","freiría","freiríamos","freiríais","freirían"],
+    subjunctive: ["fría","frías","fría","friamos","friáis","frían"],
+  },
+
+  // ── ELEGIR ──
+  elegir: {
+    present:     ["elijo","eliges","elige","elegimos","elegís","eligen"],
+    preterite:   ["elegí","elegiste","eligió","elegimos","elegisteis","eligieron"],
+    imperfect:   ["elegía","elegías","elegía","elegíamos","elegíais","elegían"],
+    future:      ["elegiré","elegirás","elegirá","elegiremos","elegiréis","elegirán"],
+    conditional: ["elegiría","elegirías","elegiría","elegiríamos","elegiríais","elegirían"],
+    subjunctive: ["elija","elijas","elija","elijamos","elijáis","elijan"],
+  },
+
+  // ── CORREGIR ──
+  corregir: {
+    present:     ["corrijo","corriges","corrige","corregimos","corregís","corrigen"],
+    preterite:   ["corregí","corregiste","corrigió","corregimos","corregisteis","corrigieron"],
+    imperfect:   ["corregía","corregías","corregía","corregíamos","corregíais","corregían"],
+    future:      ["corregiré","corregirás","corregirá","corregiremos","corregiréis","corregirán"],
+    conditional: ["corregiría","corregirías","corregiría","corregiríamos","corregiríais","corregirían"],
+    subjunctive: ["corrija","corrijas","corrija","corrijamos","corrijáis","corrijan"],
+  },
+
+  // ── SEGUIR ──
+  seguir: {
+    present:     ["sigo","sigues","sigue","seguimos","seguís","siguen"],
+    preterite:   ["seguí","seguiste","siguió","seguimos","seguisteis","siguieron"],
+    imperfect:   ["seguía","seguías","seguía","seguíamos","seguíais","seguían"],
+    future:      ["seguiré","seguirás","seguirá","seguiremos","seguiréis","seguirán"],
+    conditional: ["seguiría","seguirías","seguiría","seguiríamos","seguiríais","seguirían"],
+    subjunctive: ["siga","sigas","siga","sigamos","sigáis","sigan"],
+  },
+
+  // ── CONSEGUIR ──
+  conseguir: {
+    present:     ["consigo","consigues","consigue","conseguimos","conseguís","consiguen"],
+    preterite:   ["conseguí","conseguiste","consiguió","conseguimos","conseguisteis","consiguieron"],
+    imperfect:   ["conseguía","conseguías","conseguía","conseguíamos","conseguíais","conseguían"],
+    future:      ["conseguiré","conseguirás","conseguirá","conseguiremos","conseguiréis","conseguirán"],
+    conditional: ["conseguiría","conseguirías","conseguiría","conseguiríamos","conseguiríais","conseguirían"],
+    subjunctive: ["consiga","consigas","consiga","consigamos","consigáis","consigan"],
+  },
+
+  // ── DORMIR ──
+  dormir: {
+    present:     ["duermo","duermes","duerme","dormimos","dormís","duermen"],
+    preterite:   ["dormí","dormiste","durmió","dormimos","dormisteis","durmieron"],
+    imperfect:   ["dormía","dormías","dormía","dormíamos","dormíais","dormían"],
+    future:      ["dormiré","dormirás","dormirá","dormiremos","dormiréis","dormirán"],
+    conditional: ["dormiría","dormirías","dormiría","dormiríamos","dormiríais","dormirían"],
+    subjunctive: ["duerma","duermas","duerma","durmamos","durmáis","duerman"],
+  },
+
+  // ── MORIR ──
+  morir: {
+    present:     ["muero","mueres","muere","morimos","morís","mueren"],
+    preterite:   ["morí","moriste","murió","morimos","moristeis","murieron"],
+    imperfect:   ["moría","morías","moría","moríamos","moríais","morían"],
+    future:      ["moriré","morirás","morirá","moriremos","moriréis","morirán"],
+    conditional: ["moriría","morirías","moriría","moriríamos","moriríais","morirían"],
+    subjunctive: ["muera","mueras","muera","muramos","muráis","mueran"],
+  },
+
+  // ── PEDIR ──
+  pedir: {
+    present:     ["pido","pides","pide","pedimos","pedís","piden"],
+    preterite:   ["pedí","pediste","pidió","pedimos","pedisteis","pidieron"],
+    imperfect:   ["pedía","pedías","pedía","pedíamos","pedíais","pedían"],
+    future:      ["pediré","pedirás","pedirá","pediremos","pediréis","pedirán"],
+    conditional: ["pediría","pedirías","pediría","pediríamos","pediríais","pedirían"],
+    subjunctive: ["pida","pidas","pida","pidamos","pidáis","pidan"],
+  },
+
+  // ── VOLVER ──
+  volver: {
+    present:     ["vuelvo","vuelves","vuelve","volvemos","volvéis","vuelven"],
+    preterite:   ["volví","volviste","volvió","volvimos","volvisteis","volvieron"],
+    imperfect:   ["volvía","volvías","volvía","volvíamos","volvíais","volvían"],
+    future:      ["volveré","volverás","volverá","volveremos","volveréis","volverán"],
+    conditional: ["volvería","volverías","volvería","volveríamos","volveríais","volverían"],
+    subjunctive: ["vuelva","vuelvas","vuelva","volvamos","volváis","vuelvan"],
+  },
+
+  // ── JUGAR ──
+  jugar: {
+    present:     ["juego","juegas","juega","jugamos","jugáis","juegan"],
+    preterite:   ["jugué","jugaste","jugó","jugamos","jugasteis","jugaron"],
+    imperfect:   ["jugaba","jugabas","jugaba","jugábamos","jugabais","jugaban"],
+    future:      ["jugaré","jugarás","jugará","jugaremos","jugaréis","jugarán"],
+    conditional: ["jugaría","jugarías","jugaría","jugaríamos","jugaríais","jugarían"],
+    subjunctive: ["juegue","juegues","juegue","juguemos","juguéis","jueguen"],
+  },
+
+  // ── ENVIAR ──
+  enviar: {
+    present:     ["envío","envías","envía","enviamos","enviáis","envían"],
+    preterite:   ["envié","enviaste","envió","enviamos","enviasteis","enviaron"],
+    imperfect:   ["enviaba","enviabas","enviaba","enviábamos","enviabais","enviaban"],
+    future:      ["enviaré","enviarás","enviará","enviaremos","enviaréis","enviarán"],
+    conditional: ["enviaría","enviarías","enviaría","enviaríamos","enviaríais","enviarían"],
+    subjunctive: ["envíe","envíes","envíe","enviemos","enviéis","envíen"],
+  },
+
+  // ── CONTINUAR ──
+  continuar: {
+    present:     ["continúo","continúas","continúa","continuamos","continuáis","continúan"],
+    preterite:   ["continué","continuaste","continuó","continuamos","continuasteis","continuaron"],
+    imperfect:   ["continuaba","continuabas","continuaba","continuábamos","continuabais","continuaban"],
+    future:      ["continuaré","continuarás","continuará","continuaremos","continuaréis","continuarán"],
+    conditional: ["continuaría","continuarías","continuaría","continuaríamos","continuaríais","continuarían"],
+    subjunctive: ["continúe","continúes","continúe","continuemos","continuéis","continúen"],
+  },
+
+  // ── ACTUAR ──
+  actuar: {
+    present:     ["actúo","actúas","actúa","actuamos","actuáis","actúan"],
+    preterite:   ["actué","actuaste","actuó","actuamos","actuasteis","actuaron"],
+    imperfect:   ["actuaba","actuabas","actuaba","actuábamos","actuabais","actuaban"],
+    future:      ["actuaré","actuarás","actuará","actuaremos","actuaréis","actuarán"],
+    conditional: ["actuaría","actuarías","actuaría","actuaríamos","actuaríais","actuarían"],
+    subjunctive: ["actúe","actúes","actúe","actuemos","actuéis","actúen"],
+  },
+};
+
+// ── REGULAR CONJUGATION ENGINE ───────────────────────────────────────
+function conjugateRegular(verb, tense) {
+  let ending, stem;
+  if (verb.endsWith("ar"))      { ending = "ar"; stem = verb.slice(0, -2); }
+  else if (verb.endsWith("er")) { ending = "er"; stem = verb.slice(0, -2); }
+  else if (verb.endsWith("ir")) { ending = "ir"; stem = verb.slice(0, -2); }
+  else return null;
+
+  const stemType = getStemChangeType(verb);
+
+  const tables = {
+    ar: {
+      present:     (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["o","as","a","amos","áis","an"][i]; },
+      preterite:   (s,i) => s + ["é","aste","ó","amos","asteis","aron"][i],
+      imperfect:   (s,i) => s + ["aba","abas","aba","ábamos","abais","aban"][i],
+      future:      (s,i) => verb + ["é","ás","á","emos","éis","án"][i],
+      conditional: (s,i) => verb + ["ía","ías","ía","íamos","íais","ían"][i],
+      subjunctive: (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["e","es","e","emos","éis","en"][i]; },
+    },
+    er: {
+      present:     (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["o","es","e","emos","éis","en"][i]; },
+      preterite:   (s,i) => s + ["í","iste","ió","imos","isteis","ieron"][i],
+      imperfect:   (s,i) => s + ["ía","ías","ía","íamos","íais","ían"][i],
+      future:      (s,i) => verb + ["é","ás","á","emos","éis","án"][i],
+      conditional: (s,i) => verb + ["ía","ías","ía","íamos","íais","ían"][i],
+      subjunctive: (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["a","as","a","amos","áis","an"][i]; },
+    },
+    ir: {
+      present:     (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["o","es","e","imos","ís","en"][i]; },
+      preterite:   (s,i) => {
+        // e→i and o→ue verbs change in 3rd person preterite
+        if (stemType === "e_i" || stemType === "o_ue") {
+          const st = (i === 2 || i === 5) ? applyStemChange(s, stemType === "o_ue" ? "o_ue_pret" : stemType, i) : s;
+          return st + ["í","iste","ió","imos","isteis","ieron"][i];
+        }
+        return s + ["í","iste","ió","imos","isteis","ieron"][i];
+      },
+      imperfect:   (s,i) => s + ["ía","ías","ía","íamos","íais","ían"][i],
+      future:      (s,i) => verb + ["é","ás","á","emos","éis","án"][i],
+      conditional: (s,i) => verb + ["ía","ías","ía","íamos","íais","ían"][i],
+      subjunctive: (s,i) => { const st = stemType ? applyStemChange(s,stemType,i) : s; return st + ["a","as","a","amos","áis","an"][i]; },
+    },
+  };
+
+  const tbl = tables[ending];
+  if (!tbl || !tbl[tense]) return null;
+
+  const forms = Array.from({length: 6}, (_, i) => tbl[tense](stem, i));
+  return { forms, type: stemType ? "stem" : "regular" };
+}
+
+// ── MAIN EXPORT ──────────────────────────────────────────────────────
+function getConjugations(verb, tense) {
+  verb = verb.trim().toLowerCase();
+
+  // Check full irregular table first
+  if (IRREGULARS[verb] && IRREGULARS[verb][tense]) {
+    return { forms: IRREGULARS[verb][tense], type: "irregular" };
+  }
+
+  // Fall back to regular engine (handles stem-changers too)
+  return conjugateRegular(verb, tense);
+}
   </script>
 
 </body>
