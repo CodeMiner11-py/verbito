@@ -106,7 +106,7 @@
     /* ── SCREENS ── */
     #screen-loading,
     #screen-auth,
-    #screen-already-done,
+    #screen-intro,
     #screen-quiz,
     #screen-results {
       flex: 1;
@@ -233,6 +233,359 @@
       color: var(--gray);
       font-weight: 600;
     }
+
+    /* ── INTRO SCREEN ── */
+    #screen-intro {
+      justify-content: flex-start;
+      padding-top: 3.5rem;
+      padding-bottom: 3.5rem;
+    }
+
+    .intro-shell {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .intro-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .intro-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--red-light);
+      border: 1.5px solid rgba(200,28,28,0.18);
+      color: var(--red);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 1.1rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .intro-eyebrow .material-icons-round { font-size: 0.95rem; }
+
+    .intro-header h1 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.7rem;
+    }
+
+    .intro-header h1 .red { color: var(--red); }
+
+    .intro-header p {
+      color: var(--gray);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* Stats row */
+    .intro-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      margin-bottom: 1.1rem;
+      animation: fadeUp 0.45s ease 0.08s both;
+    }
+
+    @media (max-width: 500px) {
+      .intro-stats { grid-template-columns: 1fr; }
+    }
+
+    .intro-stat {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .intro-stat:hover { border-color: var(--red); transform: translateY(-2px); }
+
+    .intro-stat .stat-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .intro-stat .stat-icon .material-icons-round {
+      font-size: 1.6rem;
+      color: var(--red);
+    }
+
+    .intro-stat .stat-val {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .intro-stat .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    /* What's covered */
+    .intro-covers {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.1rem;
+      animation: fadeUp 0.45s ease 0.14s both;
+    }
+
+    .intro-covers-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .covers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+    }
+
+    @media (max-width: 500px) {
+      .covers-grid { grid-template-columns: 1fr; }
+    }
+
+    .cover-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .cover-item-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cover-item-icon .material-icons-round { font-size: 1.1rem; }
+
+    .cover-conj { background: #dbeafe; }
+    .cover-conj .material-icons-round { color: #1e40af; }
+    .cover-vocab { background: #f3e8ff; }
+    .cover-vocab .material-icons-round { color: #6b21a8; }
+    .cover-grammar { background: #fef3c7; }
+    .cover-grammar .material-icons-round { color: #92400e; }
+
+    .cover-item-text .ci-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--dark);
+      display: block;
+    }
+
+    .cover-item-text .ci-sub {
+      font-size: 0.78rem;
+      color: var(--gray);
+    }
+
+    /* How it works */
+    .intro-howto {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.45s ease 0.2s both;
+    }
+
+    .intro-howto-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .howto-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .howto-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .howto-step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 1.5px solid rgba(200,28,28,0.2);
+      color: var(--red);
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .howto-step p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .howto-step p strong { color: var(--dark); }
+
+    /* Start CTA */
+    .intro-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      animation: fadeUp 0.45s ease 0.26s both;
+    }
+
+    .btn-start {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: var(--red);
+      color: white;
+      padding: 1rem 2.8rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(200,28,28,0.3);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(200,28,28,0.4);
+      background: var(--red-dark);
+    }
+
+    .btn-start .material-icons-round { font-size: 1.2rem; }
+
+    .intro-fine-print {
+      font-size: 0.82rem;
+      color: var(--gray);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .intro-fine-print .material-icons-round { font-size: 0.95rem; color: var(--gray); }
+
+    /* Already-taken notice on intro */
+    .already-taken-notice {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 1.6rem;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.2rem 1.6rem;
+      animation: fadeUp 0.45s ease 0.3s both;
+    }
+
+    .already-taken-notice.visible { display: flex; }
+
+    .atn-inner {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .atn-score-badge {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 2px solid rgba(200,28,28,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .atn-score-badge .atn-num {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .atn-score-badge .atn-denom {
+      font-size: 0.62rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    .atn-text { flex: 1; }
+
+    .atn-text strong {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.15rem;
+    }
+
+    .atn-text span {
+      font-size: 0.82rem;
+      color: var(--gray);
+    }
+
+    .btn-view-score {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--dark);
+      padding: 0.55rem 1.1rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-view-score:hover { border-color: var(--red); color: var(--red); }
 
     /* ── QUIZ SCREEN ── */
     #screen-quiz {
@@ -713,22 +1066,124 @@
     </div>
   </div>
 
-  <!-- ③ ALREADY COMPLETED -->
-  <div id="screen-already-done">
-    <div class="gate-card">
-      <div class="done-score-circle">
-        <span class="big-num" id="doneScore">—</span>
-        <span class="out-of">/ 20</span>
+  <!-- ③ INTRO / START -->
+  <div id="screen-intro">
+    <div class="intro-shell">
+
+      <!-- Header -->
+      <div class="intro-header">
+        <div class="intro-eyebrow">
+          <span class="material-icons-round">psychology</span> Placement Quiz
+        </div>
+        <h1>Find your <span class="red">Spanish level</span></h1>
+        <p>Answer 20 adaptive questions across conjugation, vocabulary, and grammar. The quiz gets harder or easier based on how you're doing.</p>
       </div>
-      <div class="done-icon-wrap" style="display:none" id="doneIconWrap">
-        <span class="material-icons-round">task_alt</span>
+
+      <!-- Stats -->
+      <div class="intro-stats">
+        <div class="intro-stat">
+          <div class="stat-icon"><span class="material-icons-round">format_list_numbered</span></div>
+          <div class="stat-val">20</div>
+          <div class="stat-label">Questions</div>
+        </div>
+        <div class="intro-stat">
+          <div class="stat-icon"><span class="material-icons-round">schedule</span></div>
+          <div class="stat-val">~8 min</div>
+          <div class="stat-label">Est. time</div>
+        </div>
+        <div class="intro-stat">
+          <div class="stat-icon"><span class="material-icons-round">trending_up</span></div>
+          <div class="stat-val">Adaptive</div>
+          <div class="stat-label">Difficulty</div>
+        </div>
       </div>
-      <h2>You've already taken this quiz!</h2>
-      <p>The placement quiz can only be taken once. Your score has been saved and your learning path is set.<br><br>Head to the app to keep practising.</p>
-      <a href="app.html" class="btn-primary" style="margin-top:0.5rem">
-        <span class="material-icons-round">home</span> Go to Verbito
-      </a>
+
+      <!-- What's covered -->
+      <div class="intro-covers">
+        <div class="intro-covers-title">What's covered</div>
+        <div class="covers-grid">
+          <div class="cover-item">
+            <div class="cover-item-icon cover-conj">
+              <span class="material-icons-round">format_size</span>
+            </div>
+            <div class="cover-item-text">
+              <span class="ci-name">Conjugation</span>
+              <span class="ci-sub">All tenses, irregular verbs</span>
+            </div>
+          </div>
+          <div class="cover-item">
+            <div class="cover-item-icon cover-vocab">
+              <span class="material-icons-round">menu_book</span>
+            </div>
+            <div class="cover-item-text">
+              <span class="ci-name">Vocabulary</span>
+              <span class="ci-sub">Words, phrases, expressions</span>
+            </div>
+          </div>
+          <div class="cover-item">
+            <div class="cover-item-icon cover-grammar">
+              <span class="material-icons-round">edit_note</span>
+            </div>
+            <div class="cover-item-text">
+              <span class="ci-name">Grammar</span>
+              <span class="ci-sub">Rules, gender, subjunctive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="intro-howto">
+        <div class="intro-howto-title">How it works</div>
+        <div class="howto-steps">
+          <div class="howto-step">
+            <div class="howto-step-num">1</div>
+            <p><strong>Pick the correct answer</strong> from four multiple-choice options for each question.</p>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">2</div>
+            <p><strong>The difficulty adjusts</strong> automatically — get two right in a row and it gets harder; two wrong and it eases up.</p>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">3</div>
+            <p><strong>See your results</strong> with a score, level, and breakdown by category — saved to your account.</p>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">4</div>
+            <p><strong>One attempt only</strong> — the quiz is a placement tool, so each account gets one shot.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start CTA -->
+      <div class="intro-cta">
+        <button class="btn-start" id="btnStartQuiz">
+          <span class="material-icons-round">play_arrow</span> Start Quiz
+        </button>
+        <span class="intro-fine-print">
+          <span class="material-icons-round">lock</span> Results saved to your account &nbsp;·&nbsp; One attempt per account
+        </span>
+      </div>
+
     </div>
+
+    <!-- Already-taken notice (shown below if user has done it) -->
+    <div class="already-taken-notice" id="alreadyTakenNotice">
+      <div class="atn-inner">
+        <div class="atn-score-badge">
+          <span class="atn-num" id="atnScore">—</span>
+          <span class="atn-denom">/ 20</span>
+        </div>
+        <div class="atn-text">
+          <strong>You've already completed this quiz</strong>
+          <span>Your placement score is saved. The quiz can only be taken once.</span>
+        </div>
+        <button class="btn-view-score" id="btnViewScore">
+          <span class="material-icons-round">bar_chart</span> View Score
+        </button>
+      </div>
+    </div>
+
   </div>
 
   <!-- ④ QUIZ -->
@@ -861,7 +1316,7 @@
     const db   = getFirestore(app);
 
     // ── Screen helpers ───────────────────────────────────────────────
-    const screens = ["loading","auth","already-done","quiz","results"];
+    const screens = ["loading","auth","intro","quiz","results"];
 
     function showScreen(name) {
       screens.forEach(s => {
@@ -898,16 +1353,37 @@
       const userSnap = await getDoc(userRef);
       const data     = userSnap.exists() ? userSnap.data() : {};
 
+      // Always show intro screen first
+      showScreen("intro");
+
       if (data.hasCompletedQuiz) {
-        // Show "already done" screen with their score
-        const prev = data.quizScore ?? "—";
-        document.getElementById("doneScore").textContent = prev;
-        showScreen("already-done");
+        // Show the already-taken notice at the bottom of intro
+        const prevScore = data.quizScore ?? "—";
+        document.getElementById("atnScore").textContent = prevScore;
+        document.getElementById("alreadyTakenNotice").classList.add("visible");
+
+        // Disable start button and update label
+        const btnStart = document.getElementById("btnStartQuiz");
+        btnStart.disabled = true;
+        btnStart.style.opacity = "0.45";
+        btnStart.style.cursor = "not-allowed";
+        btnStart.style.transform = "none";
+        btnStart.style.boxShadow = "none";
+        btnStart.innerHTML = `<span class="material-icons-round">block</span> Already Completed`;
+
+        // "View Score" button — store results data for re-rendering
+        document.getElementById("btnViewScore").addEventListener("click", () => {
+          showScreen("results");
+          renderResultsFromFirestore(data);
+        });
+
         return;
       }
 
-      // All clear — start quiz
-      startQuiz(user);
+      // Wire up start button for new users
+      document.getElementById("btnStartQuiz").addEventListener("click", () => {
+        startQuiz(user);
+      });
     });
 
     // ── Quiz logic ───────────────────────────────────────────────────
@@ -1079,6 +1555,25 @@
       document.getElementById("levelIcon").textContent = lIcon;
       document.getElementById("levelName").textContent = lName;
       document.getElementById("levelDesc").textContent = lDesc;
+    }
+
+    // ── Re-render results from Firestore data (for "View Score") ──────
+    function renderResultsFromFirestore(data) {
+      // Hide saving indicator — results are already saved
+      const ind = document.getElementById("savingIndicator");
+      ind.classList.remove("saving");
+      document.getElementById("savingText").innerHTML =
+        `<span class="material-icons-round" style="color:var(--green);font-size:1rem">check_circle</span> Results saved`;
+
+      // Build a results-like object from stored data
+      const r = {
+        score:      data.quizScore  ?? 0,
+        total:      data.quizTotal  ?? 20,
+        raw:        data.quizRaw    ?? 0,
+        categories: data.quizCategories ?? { conjugation:{correct:0,total:0}, vocab:{correct:0,total:0}, grammar:{correct:0,total:0} },
+        answers:    data.quizAnswers ?? [],
+      };
+      renderResults(r);
     }
 
     async function saveResults(user, results) {
