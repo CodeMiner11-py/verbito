@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lessons · Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <style>
+    :root {
+      --red:          #C81C1C;
+      --red-dark:     #9e1515;
+      --red-light:    rgba(200,28,28,0.08);
+      --bg:           #f7f4f1;
+      --white:        #ffffff;
+      --dark:         #1c1410;
+      --gray:         #6b6560;
+      --border:       #e8e2dc;
+      --green:        #15803d;
+      --green-light:  #dcfce7;
+      --yellow:       #92400e;
+      --yellow-light: #fef3c7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Funnel Display', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--red);
+      text-decoration: none;
+    }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--dark); }
+    .nav-back .material-icons-round { font-size: 1.1rem; }
+
+    /* ── SCREENS ─────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── LOADING ─────────────────────────────── */
+    #screen-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+      gap: 1rem;
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    /* ── AUTH GATE ────────────────────────────── */
+    #screen-auth {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    #screen-auth .material-icons-round { font-size: 3rem; color: var(--gray); }
+    #screen-auth h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
+    #screen-auth p { color: var(--gray); }
+    #screen-auth a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background: var(--red);
+      color: #fff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ── NO QUIZ ─────────────────────────────── */
+    #screen-no-quiz {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    #screen-no-quiz .material-icons-round { font-size: 3rem; color: var(--gray); }
+    #screen-no-quiz h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
+    #screen-no-quiz p { color: var(--gray); max-width: 380px; }
+    #screen-no-quiz a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background: var(--red);
+      color: #fff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ── PENDING ─────────────────────────────── */
+    #screen-pending {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    #screen-pending h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
+    #screen-pending p { color: var(--gray); max-width: 360px; }
+    .pending-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .pending-dots span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse-dot 1.2s ease-in-out infinite;
+    }
+    .pending-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .pending-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse-dot {
+      0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
+      40%           { opacity: 1;    transform: scale(1); }
+    }
+
+    /* ── LESSONS LIST ────────────────────────── */
+    #screen-lessons {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .lessons-header {
+      margin-bottom: 2rem;
+    }
+    .lessons-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .lessons-title {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .lessons-subtitle {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--red-light);
+      color: var(--red);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      margin-top: 0.75rem;
+    }
+    .profile-badge .material-icons-round { font-size: 0.95rem; }
+
+    .lesson-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .lesson-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .lesson-card:hover {
+      border-color: #d4cdc6;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateY(-1px);
+    }
+
+    .lesson-number {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Funnel Display', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gray);
+      flex-shrink: 0;
+    }
+
+    .lesson-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .lesson-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lesson-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .lesson-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.78rem;
+      color: var(--gray);
+    }
+    .lesson-meta-item .material-icons-round { font-size: 0.9rem; }
+
+    .cat-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+    }
+    .cat-badge.conjugation { background: #dbeafe; color: #1d4ed8; }
+    .cat-badge.vocab       { background: #dcfce7; color: #15803d; }
+    .cat-badge.grammar     { background: #fef3c7; color: #92400e; }
+
+    .lesson-arrow {
+      color: var(--border);
+      flex-shrink: 0;
+    }
+    .lesson-card:hover .lesson-arrow { color: var(--gray); }
+
+    /* ── LESSON DETAIL ───────────────────────── */
+    #screen-detail {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .detail-header {
+      margin-bottom: 2rem;
+    }
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      margin-bottom: 1.25rem;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .detail-back:hover { color: var(--dark); }
+    .detail-back .material-icons-round { font-size: 1.1rem; }
+
+    .detail-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .detail-title {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .detail-summary {
+      color: var(--gray);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .detail-stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .detail-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    .detail-stat .material-icons-round { font-size: 1rem; }
+
+    /* ── QUESTIONS ───────────────────────────── */
+    .questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .question-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .question-header {
+      padding: 1.25rem 1.5rem 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .question-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gray);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .question-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* Multiple choice */
+    .mc-options {
+      padding: 0 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .mc-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      font-size: 0.9rem;
+    }
+    .mc-option:hover:not(.selected):not(.disabled) {
+      border-color: #c4bcb5;
+      background: var(--bg);
+    }
+    .mc-option .opt-letter {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gray);
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .mc-option.correct {
+      border-color: #86efac;
+      background: var(--green-light);
+    }
+    .mc-option.correct .opt-letter {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+    .mc-option.wrong {
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+    .mc-option.wrong .opt-letter {
+      background: #dc2626;
+      color: white;
+      border-color: #dc2626;
+    }
+    .mc-option.reveal-correct {
+      border-color: #86efac;
+      background: var(--green-light);
+    }
+    .mc-option.reveal-correct .opt-letter {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+    .mc-option.disabled { pointer-events: none; }
+
+    /* Translation */
+    .tr-input-area {
+      padding: 0 1.5rem 1.25rem;
+    }
+    .tr-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      background: var(--white);
+      color: var(--dark);
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    .tr-input:focus { border-color: var(--red); }
+    .tr-input.correct { border-color: #86efac; background: var(--green-light); }
+    .tr-input.wrong   { border-color: #fca5a5; background: #fef2f2; }
+    .tr-input:disabled { pointer-events: none; }
+    .tr-check-btn {
+      margin-top: 0.6rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .tr-check-btn:hover { background: var(--red-dark); }
+    .tr-check-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+    /* True/False */
+    .tf-options {
+      padding: 0 1.5rem 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+    .tf-option {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .tf-option .material-icons-round { font-size: 1.1rem; }
+    .tf-option:hover:not(.disabled) {
+      border-color: #c4bcb5;
+      background: var(--bg);
+    }
+    .tf-option.correct {
+      border-color: #86efac;
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .tf-option.wrong {
+      border-color: #fca5a5;
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    .tf-option.reveal-correct {
+      border-color: #86efac;
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .tf-option.disabled { pointer-events: none; }
+
+    /* Conjugation chart */
+    .chart-area {
+      padding: 0 1.5rem 1.25rem;
+    }
+    .conj-chart {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .conj-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0.9rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .conj-pronoun {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray);
+      min-width: 55px;
+    }
+    .conj-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .conj-input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      background: white;
+      transition: border-color 0.15s;
+    }
+    .conj-input:focus { border-color: var(--red); }
+    .conj-input.correct { border-color: #86efac; background: var(--green-light); }
+    .conj-input.wrong   { border-color: #fca5a5; background: #fef2f2; }
+    .conj-input:disabled { pointer-events: none; }
+    .chart-check-btn {
+      padding: 0.6rem 1.25rem;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .chart-check-btn:hover { background: var(--red-dark); }
+    .chart-check-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+    /* Explanation */
+    .explanation {
+      margin: 0 1.5rem 1.25rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border-radius: 8px;
+      border-left: 3px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.5;
+      display: none;
+    }
+    .explanation.show { display: block; }
+    .explanation.correct-exp { border-left-color: var(--green); }
+    .explanation.wrong-exp   { border-left-color: #dc2626; }
+    .explanation strong { color: var(--dark); }
+
+    /* ── FOOTER ──────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--gray);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--red); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Verbito</a>
+  <a href="index.html" class="nav-back">
+    <span class="material-icons-round">arrow_back</span>
+    Home
+  </a>
+</nav>
+
+<!-- Loading -->
+<div id="screen-loading" class="screen active">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading your lessons…</p>
+</div>
+
+<!-- Auth gate -->
+<div id="screen-auth" class="screen">
+  <span class="material-icons-round">lock</span>
+  <h2>Sign in to view lessons</h2>
+  <p>Your personalised lessons are waiting. Sign in to continue.</p>
+  <a href="continue.html">Sign In</a>
+</div>
+
+<!-- No quiz taken -->
+<div id="screen-no-quiz" class="screen">
+  <span class="material-icons-round">quiz</span>
+  <h2>Take the quiz first</h2>
+  <p>Your lessons are generated from your quiz results. Take the placement quiz to unlock personalised lessons.</p>
+  <a href="quiz.html">Take the Quiz</a>
+</div>
+
+<!-- Pending generation -->
+<div id="screen-pending" class="screen">
+  <div class="pending-dots">
+    <span></span><span></span><span></span>
+  </div>
+  <h2>Generating your lessons…</h2>
+  <p>We're building lessons tailored to your quiz results. This takes about 2 minutes.</p>
+</div>
+
+<!-- Lessons list -->
+<div id="screen-lessons" class="screen">
+  <div class="lessons-header">
+    <div class="lessons-eyebrow">Your Lessons</div>
+    <h1 class="lessons-title">Keep Learning</h1>
+    <p class="lessons-subtitle">6 lessons personalised to your quiz results.</p>
+    <div class="profile-badge" id="profileBadge">
+      <span class="material-icons-round">tune</span>
+      <span id="profileBadgeText">Loading profile…</span>
+    </div>
+  </div>
+  <div class="lesson-cards" id="lessonCards"></div>
+</div>
+
+<!-- Lesson detail -->
+<div id="screen-detail" class="screen">
+  <div class="detail-header">
+    <button class="detail-back" id="btnBackToLessons">
+      <span class="material-icons-round">arrow_back</span>
+      All Lessons
+    </button>
+    <div class="detail-eyebrow" id="detailEyebrow">Lesson 1</div>
+    <h2 class="detail-title" id="detailTitle"></h2>
+    <p class="detail-summary" id="detailSummary"></p>
+    <div class="detail-stats" id="detailStats"></div>
+  </div>
+  <div class="questions-list" id="questionsList"></div>
+</div>
+
+<footer>
+  Made with <span class="material-icons-round" style="font-size:0.9rem;color:var(--red);vertical-align:middle">favorite</span> by <a href="#">Verbito</a>
+</footer>
+
+<script type="module">
+  import { initializeApp }                            from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged }              from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, onSnapshot }   from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey:     "AIzaSyAscnVMEcj-U0wr_uU9cy32S2XGqs7wo34",
+    authDomain: "verbito-9c4c4.firebaseapp.com",
+    projectId:  "verbito-9c4c4",
+    appId:      "1:127778939909:web:9ead92ec017c8c2e13a86c",
+  };
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // ── Screens ───────────────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("screen-" + id).classList.add("active");
+    window.scrollTo(0, 0);
+  }
+
+  // ── Auth ──────────────────────────────────────────────────────────
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { showScreen("auth"); return; }
+
+    // Read user doc
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    if (!userSnap.exists() || !userSnap.data().lessonProfile) {
+      showScreen("no-quiz"); return;
+    }
+
+    const profileId = userSnap.data().lessonProfile;
+    document.getElementById("profileBadgeText").textContent = profileId;
+
+    // Watch lessons doc
+    const lessonsRef = doc(db, "lessons", profileId);
+    const unsub = onSnapshot(lessonsRef, (snap) => {
+      if (!snap.exists()) {
+        showScreen("pending"); return;
+      }
+      const data = snap.data();
+      if (data.status === "pending") {
+        showScreen("pending"); return;
+      }
+      if (data.status === "error") {
+        showScreen("pending");
+        document.querySelector("#screen-pending h2").textContent = "Something went wrong";
+        document.querySelector("#screen-pending p").textContent = "We couldn't generate your lessons. Please try again later.";
+        unsub();
+        return;
+      }
+      if (data.status === "ready") {
+        unsub();
+        renderLessons(data.lessons, profileId);
+      }
+    });
+  });
+
+  // ── Render lesson cards ───────────────────────────────────────────
+  function renderLessons(lessons, profileId) {
+    showScreen("lessons");
+    document.getElementById("profileBadgeText").textContent = profileId;
+    const container = document.getElementById("lessonCards");
+    container.innerHTML = "";
+
+    lessons.forEach((lesson, i) => {
+      const card = document.createElement("div");
+      card.className = "lesson-card";
+      card.innerHTML = `
+        <div class="lesson-number">${i + 1}</div>
+        <div class="lesson-info">
+          <div class="lesson-title">${lesson.title}</div>
+          <div class="lesson-meta">
+            <span class="cat-badge ${lesson.category}">${lesson.category}</span>
+            <span class="lesson-meta-item">
+              <span class="material-icons-round">help_outline</span>
+              ${lesson.questions?.length ?? 0} questions
+            </span>
+            <span class="lesson-meta-item">
+              <span class="material-icons-round">schedule</span>
+              ~${lesson.estimatedMinutes ?? 7} min
+            </span>
+          </div>
+        </div>
+        <span class="material-icons-round lesson-arrow">chevron_right</span>
+      `;
+      card.addEventListener("click", () => renderDetail(lesson, i));
+      container.appendChild(card);
+    });
+  }
+
+  // ── Render lesson detail ──────────────────────────────────────────
+  function renderDetail(lesson, index) {
+    showScreen("detail");
+
+    document.getElementById("detailEyebrow").innerHTML =
+      `<span class="cat-badge ${lesson.category}" style="text-transform:capitalize">${lesson.category}</span>&nbsp; Lesson ${index + 1}`;
+    document.getElementById("detailTitle").textContent = lesson.title;
+    document.getElementById("detailSummary").textContent = lesson.summary ?? "";
+    document.getElementById("detailStats").innerHTML = `
+      <span class="detail-stat">
+        <span class="material-icons-round">help_outline</span>
+        ${lesson.questions?.length ?? 0} questions
+      </span>
+      <span class="detail-stat">
+        <span class="material-icons-round">schedule</span>
+        ~${lesson.estimatedMinutes ?? 7} min
+      </span>
+      <span class="detail-stat">
+        <span class="material-icons-round">signal_cellular_alt</span>
+        Difficulty ${lesson.difficulty ?? 1}/5
+      </span>
+    `;
+
+    const list = document.getElementById("questionsList");
+    list.innerHTML = "";
+
+    (lesson.questions ?? []).forEach((q, qi) => {
+      const card = buildQuestionCard(q, qi);
+      list.appendChild(card);
+    });
+  }
+
+  document.getElementById("btnBackToLessons").addEventListener("click", () => showScreen("lessons"));
+
+  // ── Build question card ───────────────────────────────────────────
+  function buildQuestionCard(q, qi) {
+    const card = document.createElement("div");
+    card.className = "question-card";
+
+    // Header
+    const header = document.createElement("div");
+    header.className = "question-header";
+    header.innerHTML = `
+      <span class="question-num">Q${qi + 1}</span>
+      <span class="question-text">${q.type === "true_false" ? q.statement : q.question}</span>
+    `;
+    card.appendChild(header);
+
+    // Body by type
+    if (q.type === "multiple_choice") {
+      card.appendChild(buildMC(q));
+    } else if (q.type === "translation") {
+      card.appendChild(buildTranslation(q));
+    } else if (q.type === "true_false") {
+      card.appendChild(buildTrueFalse(q));
+    } else if (q.type === "conjugation_chart") {
+      card.appendChild(buildConjChart(q));
+    }
+
+    // Explanation (hidden until answered)
+    const exp = document.createElement("div");
+    exp.className = "explanation";
+    exp.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+    card.appendChild(exp);
+
+    return card;
+  }
+
+  // ── Multiple Choice ───────────────────────────────────────────────
+  function buildMC(q) {
+    const wrap = document.createElement("div");
+    wrap.className = "mc-options";
+    const letters = ["A","B","C","D"];
+
+    q.options.forEach((opt, i) => {
+      const el = document.createElement("div");
+      el.className = "mc-option";
+      el.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+      el.addEventListener("click", () => {
+        if (el.classList.contains("disabled")) return;
+        // Disable all
+        wrap.querySelectorAll(".mc-option").forEach(o => o.classList.add("disabled"));
+        // Mark selected
+        const correct = opt === q.answer;
+        el.classList.add(correct ? "correct" : "wrong");
+        // Reveal correct if wrong
+        if (!correct) {
+          wrap.querySelectorAll(".mc-option").forEach(o => {
+            if (o.querySelector("span:last-child").textContent === q.answer) {
+              o.classList.add("reveal-correct");
+            }
+          });
+        }
+        // Show explanation
+        const exp = el.closest(".question-card").querySelector(".explanation");
+        exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+      });
+      wrap.appendChild(el);
+    });
+    return wrap;
+  }
+
+  // ── Translation ───────────────────────────────────────────────────
+  function buildTranslation(q) {
+    const wrap = document.createElement("div");
+    wrap.className = "tr-input-area";
+
+    const input = document.createElement("input");
+    input.className = "tr-input";
+    input.type = "text";
+    input.placeholder = q.subtype === "vocab" ? "Type the Spanish word…" : "Type your translation…";
+
+    const btn = document.createElement("button");
+    btn.className = "tr-check-btn";
+    btn.textContent = "Check";
+
+    const check = () => {
+      if (input.disabled) return;
+      const correct = gradeAnswer(input.value, q.answer, q.acceptedAlternatives ?? []);
+      input.classList.add(correct ? "correct" : "wrong");
+      input.disabled = true;
+      btn.disabled = true;
+      const exp = wrap.closest(".question-card").querySelector(".explanation");
+      if (!correct) {
+        exp.innerHTML = `<strong>Correct answer:</strong> ${q.answer}${q.explanation ? " — " + q.explanation : ""}`;
+      }
+      exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+    };
+
+    btn.addEventListener("click", check);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
+
+    wrap.appendChild(input);
+    wrap.appendChild(btn);
+    return wrap;
+  }
+
+  // ── True / False ──────────────────────────────────────────────────
+  function buildTrueFalse(q) {
+    const wrap = document.createElement("div");
+    wrap.className = "tf-options";
+
+    [
+      { label: "True",  icon: "check",  val: true  },
+      { label: "False", icon: "close",  val: false },
+    ].forEach(({ label, icon, val }) => {
+      const el = document.createElement("div");
+      el.className = "tf-option";
+      el.innerHTML = `<span class="material-icons-round">${icon}</span>${label}`;
+      el.addEventListener("click", () => {
+        if (el.classList.contains("disabled")) return;
+        wrap.querySelectorAll(".tf-option").forEach(o => o.classList.add("disabled"));
+        const correct = val === q.answer;
+        el.classList.add(correct ? "correct" : "wrong");
+        if (!correct) {
+          wrap.querySelectorAll(".tf-option").forEach(o => {
+            const isCorrectOption = (o.textContent.trim().startsWith("True") && q.answer === true)
+                                 || (o.textContent.trim().startsWith("False") && q.answer === false);
+            if (isCorrectOption) o.classList.add("reveal-correct");
+          });
+        }
+        const exp = el.closest(".question-card").querySelector(".explanation");
+        exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+      });
+      wrap.appendChild(el);
+    });
+    return wrap;
+  }
+
+  // ── Conjugation Chart ─────────────────────────────────────────────
+  function buildConjChart(q) {
+    const wrap = document.createElement("div");
+    wrap.className = "chart-area";
+
+    const pronouns = ["yo","tu","el","nosotros","vosotros","ellos"];
+    const displayPronouns = { yo:"yo", tu:"tú", el:"él/ella", nosotros:"nosotros", vosotros:"vosotros", ellos:"ellos" };
+    const chart = document.createElement("div");
+    chart.className = "conj-chart";
+
+    const inputs = [];
+
+    pronouns.forEach(p => {
+      const cell = q.chart[p];
+      if (!cell) return;
+
+      const div = document.createElement("div");
+      div.className = "conj-cell";
+      div.innerHTML = `<span class="conj-pronoun">${displayPronouns[p]}</span>`;
+
+      if (cell.blank) {
+        const inp = document.createElement("input");
+        inp.className = "conj-input";
+        inp.type = "text";
+        inp.placeholder = "…";
+        inp.dataset.answer = cell.value;
+        inputs.push(inp);
+        div.appendChild(inp);
+      } else {
+        const span = document.createElement("span");
+        span.className = "conj-value";
+        span.textContent = cell.value;
+        div.appendChild(span);
+      }
+
+      chart.appendChild(div);
+    });
+
+    const btn = document.createElement("button");
+    btn.className = "chart-check-btn";
+    btn.textContent = "Check";
+
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      btn.disabled = true;
+      let allCorrect = true;
+      inputs.forEach(inp => {
+        inp.disabled = true;
+        const correct = gradeAnswer(inp.value, inp.dataset.answer, []);
+        inp.classList.add(correct ? "correct" : "wrong");
+        if (!correct) allCorrect = false;
+      });
+      const exp = wrap.closest(".question-card").querySelector(".explanation");
+      if (!allCorrect) {
+        const answers = inputs.map(i => `${i.dataset.answer}`).join(", ");
+        exp.innerHTML = `<strong>Correct:</strong> ${answers}${q.explanation ? " — " + q.explanation : ""}`;
+      }
+      exp.classList.add("show", allCorrect ? "correct-exp" : "wrong-exp");
+    });
+
+    // Enter submits
+    inputs.forEach(inp => inp.addEventListener("keydown", e => {
+      if (e.key === "Enter") btn.click();
+    }));
+
+    wrap.appendChild(chart);
+    wrap.appendChild(btn);
+    return wrap;
+  }
+
+  // ── Grader ────────────────────────────────────────────────────────
+  function normalize(str) {
+    return str.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  function gradeAnswer(userInput, correctAnswer, acceptedAlternatives = []) {
+    const all = [correctAnswer, ...acceptedAlternatives];
+    return all.some(a => normalize(userInput) === normalize(a));
+  }
+</script>
+</body>
+</html>
