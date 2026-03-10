@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In · Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #C81C1C;
+      --red-dark: #9e1515;
+      --red-light: rgba(200,28,28,0.08);
+      --bg: #f7f4f1;
+      --white: #ffffff;
+      --dark: #1c1410;
+      --gray: #6b6560;
+      --border: #e8e2dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 38px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+
+    .nav-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--red); }
+
+    .material-icons-round {
+      font-size: 1.1em;
+      vertical-align: middle;
+      line-height: 1;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    main::before {
+      content: '';
+      position: absolute;
+      top: -150px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,28,28,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .auth-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 2.8rem 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* ── SIGN IN VIEW ── */
+    #signInView { display: block; }
+
+    .card-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-logo img { height: 34px; }
+
+    .card-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .card-title {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-subtitle {
+      color: var(--gray);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      line-height: 1.55;
+    }
+
+    .status-msg {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .status-msg.visible { display: flex; }
+    .status-msg.error { background: #fef2f2; color: var(--red); border: 1.5px solid rgba(200,28,28,0.2); }
+
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.5rem;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.97rem;
+      color: var(--dark);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      margin-bottom: 1.4rem;
+    }
+
+    .btn-google:hover {
+      border-color: #bbb;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .terms {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ── LOGGED IN VIEW ── */
+    #loggedInView {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      object-fit: cover;
+    }
+
+    .avatar-initial {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--red-light);
+      border: 3px solid rgba(200,28,28,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--red);
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    #loggedInView h2 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    #loggedInView p { color: var(--gray); font-size: 0.9rem; }
+
+    .btn-go {
+      background: var(--red);
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(200,28,28,0.25);
+      transition: background 0.2s, transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-go:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    .btn-signout {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--gray);
+      padding: 0.55rem 1.3rem;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-signout:hover { border-color: var(--red); color: var(--red); }
+
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    footer strong { color: white; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="bubble.png" alt="Verbito logo" />
+      <span>Verbito</span>
+    </a>
+    <a href="index.html" class="nav-back">
+      <span class="material-icons-round">arrow_back</span> Back to home
+    </a>
+  </nav>
+
+  <main>
+    <div class="auth-card">
+
+      <!-- SIGN IN VIEW -->
+      <div id="signInView">
+        <div class="card-logo">
+          <img src="bubble.png" alt="Verbito" />
+          <span>Verbito</span>
+        </div>
+        <h1 class="card-title">Welcome</h1>
+        <p class="card-subtitle">Sign in to track your progress, quiz scores, and more.</p>
+
+        <div class="status-msg error" id="errorMsg">
+          <span class="material-icons-round">error_outline</span>
+          <span id="errorText"></span>
+        </div>
+
+        <button class="btn-google" id="googleBtn">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <p class="terms">By continuing you agree to Verbito's terms of service.</p>
+      </div>
+
+      <!-- LOGGED IN VIEW -->
+      <div id="loggedInView">
+        <div class="avatar-initial" id="avatarInitial"></div>
+        <img class="avatar" id="avatarImg" src="" alt="" style="display:none"/>
+        <h2 id="welcomeName"></h2>
+        <p id="welcomeEmail"></p>
+        <a href="index.html" class="btn-go">
+          <span class="material-icons-round">home</span> Go to Verbito
+        </a>
+        <button class="btn-signout" id="signOutBtn">Sign out</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Made with <span class="material-icons-round" style="color:#f87171;font-size:1rem;vertical-align:middle">favorite</span> for Spanish learners · <strong>Verbito</strong></p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp }       from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup,
+             onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    // TODO: replace with your firebaseConfig
+    const firebaseConfig = {
+      apiKey: "AIzaSyAscnVMEcj-U0wr_uU9cy32S2XGqs7wo34",
+      authDomain: "verbito-9c4c4.firebaseapp.com",
+      projectId: "verbito-9c4c4",
+      storageBucket: "verbito-9c4c4.firebasestorage.app",
+      messagingSenderId: "127778939909",
+      appId: "1:127778939909:web:9ead92ec017c8c2e13a86c",
+      measurementId: "G-52XVNJG3CG"
+    };
+
+    const app      = initializeApp(firebaseConfig);
+    const auth     = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const signInView   = document.getElementById("signInView");
+    const loggedInView = document.getElementById("loggedInView");
+    const googleBtn    = document.getElementById("googleBtn");
+    const signOutBtn   = document.getElementById("signOutBtn");
+    const errorMsg     = document.getElementById("errorMsg");
+    const errorText    = document.getElementById("errorText");
+
+    function showError(msg) {
+      errorText.textContent = msg;
+      errorMsg.classList.add("visible");
+    }
+
+    function hideError() {
+      errorMsg.classList.remove("visible");
+    }
+
+    // Watch auth state
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        // Show logged-in view
+        signInView.style.display   = "none";
+        loggedInView.style.display = "flex";
+
+        document.getElementById("welcomeName").textContent  = `Hola, ${user.displayName?.split(" ")[0] || "there"}!`;
+        document.getElementById("welcomeEmail").textContent = user.email;
+
+        if (user.photoURL) {
+          const img = document.getElementById("avatarImg");
+          img.src = user.photoURL;
+          img.style.display = "block";
+          document.getElementById("avatarInitial").style.display = "none";
+        } else {
+          document.getElementById("avatarInitial").textContent = (user.displayName || "?")[0].toUpperCase();
+        }
+      } else {
+        signInView.style.display   = "block";
+        loggedInView.style.display = "none";
+      }
+    });
+
+    // Google sign in
+    googleBtn.addEventListener("click", async () => {
+      hideError();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        if (err.code !== "auth/popup-closed-by-user") {
+          showError("Sign-in failed. Please try again.");
+        }
+      }
+    });
+
+    // Sign out
+    signOutBtn.addEventListener("click", () => signOut(auth));
+  </script>
+
+</body>
+</html>
