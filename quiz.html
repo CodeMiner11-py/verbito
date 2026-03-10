@@ -970,6 +970,24 @@
 
     .btn-secondary:hover { border-color: var(--red); transform: translateY(-2px); }
 
+    /* Average score row */
+    .avg-score-row {
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.5s ease 0.15s both;
+    }
+
+    .avg-score-row .material-icons-round { color: var(--red); font-size: 1.1rem; }
+    .avg-score-row .avg-val { color: var(--red); font-size: 1.05rem; }
+
     /* Saving indicator */
     .saving-indicator {
       display: flex;
@@ -1088,7 +1106,7 @@
         </div>
         <div class="intro-stat">
           <div class="stat-icon"><span class="material-icons-round">schedule</span></div>
-          <div class="stat-val">~3 min</div>
+          <div class="stat-val">~8 min</div>
           <div class="stat-label">Est. time</div>
         </div>
         <div class="intro-stat">
@@ -1150,7 +1168,7 @@
           </div>
           <div class="howto-step">
             <div class="howto-step-num">4</div>
-            <p><strong>One attempt only</strong> — the quiz is a placement tool, so each account gets one shot.</p>
+            <p><strong>Retake anytime</strong> — each attempt is saved and your average score is tracked over time.</p>
           </div>
         </div>
       </div>
@@ -1161,25 +1179,25 @@
           <span class="material-icons-round">play_arrow</span> Start Quiz
         </button>
         <span class="intro-fine-print">
-          <span class="material-icons-round">lock</span> Results saved to your account &nbsp;·&nbsp; One attempt per account
+          <span class="material-icons-round">lock</span> Results saved to your account &nbsp;·&nbsp; Retakes tracked separately
         </span>
       </div>
 
     </div>
 
-    <!-- Already-taken notice (shown below if user has done it) -->
+    <!-- Already-taken notice (shown below if user has previous attempts) -->
     <div class="already-taken-notice" id="alreadyTakenNotice">
       <div class="atn-inner">
         <div class="atn-score-badge">
           <span class="atn-num" id="atnScore">—</span>
-          <span class="atn-denom">/ 20</span>
+          <span class="atn-denom">avg</span>
         </div>
         <div class="atn-text">
-          <strong>You've already completed this quiz</strong>
-          <span>Your placement score is saved. The quiz can only be taken once.</span>
+          <strong>You have previous attempts</strong>
+          <span id="atnCount">—</span> &nbsp;·&nbsp; Average score shown
         </div>
         <button class="btn-view-score" id="btnViewScore">
-          <span class="material-icons-round">bar_chart</span> View Score
+          <span class="material-icons-round">bar_chart</span> View Last
         </button>
       </div>
     </div>
@@ -1244,6 +1262,13 @@
         <span class="score-label" id="scoreLabel"></span>
       </div>
 
+      <!-- Average score row (hidden until there are 2+ attempts) -->
+      <div class="avg-score-row" id="avgScoreRow" style="display:none">
+        <span class="material-icons-round">query_stats</span>
+        Your average across <strong id="avgAttemptCount">—</strong>:
+        <strong id="avgScoreVal" class="avg-val">—</strong> / 20
+      </div>
+
       <!-- Category breakdown -->
       <div class="breakdown-grid">
         <div class="breakdown-card">
@@ -1277,9 +1302,9 @@
 
       <!-- CTAs -->
       <div class="results-cta">
-        <a href="app.html" class="btn-primary">
-          <span class="material-icons-round">home</span> Go to Verbito
-        </a>
+        <button class="btn-primary" id="btnRetakeQuiz">
+          <span class="material-icons-round">replay</span> Retake Quiz
+        </button>
         <a href="verb_conjugator.html" class="btn-secondary">
           <span class="material-icons-round">search</span> Verb Lookup
         </a>
@@ -1297,7 +1322,7 @@
     import { initializeApp }    from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
     import { getAuth, onAuthStateChanged }
                                 from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp }
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, serverTimestamp }
                                 from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
     // ── Firebase config ──────────────────────────────────────────────
@@ -1348,39 +1373,33 @@
 
       populateNav(user);
 
-      // Check Firestore: has user already completed quiz?
+      // Load user doc
       const userRef  = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
       const data     = userSnap.exists() ? userSnap.data() : {};
 
-      // Always show intro screen first
+      // Always show intro — retakes are always allowed
       showScreen("intro");
 
-      if (data.hasCompletedQuiz) {
-        // Show the already-taken notice at the bottom of intro
-        const prevScore = data.quizScore ?? "—";
-        document.getElementById("atnScore").textContent = prevScore;
+      const attempts = data.quizAttempts ?? [];
+
+      if (attempts.length > 0) {
+        // Show past-attempts notice
+        const avg = computeAverage(attempts);
+        document.getElementById("atnScore").textContent   = avg;
+        document.getElementById("atnCount").textContent   =
+          attempts.length === 1 ? "1 attempt" : `${attempts.length} attempts`;
         document.getElementById("alreadyTakenNotice").classList.add("visible");
 
-        // Disable start button and update label
-        const btnStart = document.getElementById("btnStartQuiz");
-        btnStart.disabled = true;
-        btnStart.style.opacity = "0.45";
-        btnStart.style.cursor = "not-allowed";
-        btnStart.style.transform = "none";
-        btnStart.style.boxShadow = "none";
-        btnStart.innerHTML = `<span class="material-icons-round">block</span> Already Completed`;
-
-        // "View Score" button — store results data for re-rendering
+        // "View Last Score" — re-render most recent attempt
         document.getElementById("btnViewScore").addEventListener("click", () => {
+          const last = { ...attempts[attempts.length - 1], _viewOnly: true };
           showScreen("results");
-          renderResultsFromFirestore(data);
+          renderResultsFromData(last, avg, attempts.length);
         });
-
-        return;
       }
 
-      // Wire up start button for new users
+      // Start button always enabled
       document.getElementById("btnStartQuiz").addEventListener("click", () => {
         startQuiz(user);
       });
@@ -1497,8 +1516,19 @@
     async function finishQuiz(user, quiz) {
       const results = quiz.getResults();
       showScreen("results");
-      renderResults(results);
-      await saveResults(user, results);
+
+      // Fetch current attempts to compute new average
+      const userRef  = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      const existing = userSnap.exists() ? (userSnap.data().quizAttempts ?? []) : [];
+
+      // Compute average including this new attempt
+      const allScores  = [...existing.map(a => a.score), results.score];
+      const newAvg     = computeAverage(allScores.map(s => ({ score: s })));
+      const attemptNum = allScores.length;
+
+      renderResultsFromData(results, newAvg, attemptNum);
+      await saveResults(user, results, newAvg);
     }
 
     function renderResults(r) {
@@ -1557,26 +1587,46 @@
       document.getElementById("levelDesc").textContent = lDesc;
     }
 
-    // ── Re-render results from Firestore data (for "View Score") ──────
-    function renderResultsFromFirestore(data) {
-      // Hide saving indicator — results are already saved
-      const ind = document.getElementById("savingIndicator");
-      ind.classList.remove("saving");
-      document.getElementById("savingText").innerHTML =
-        `<span class="material-icons-round" style="color:var(--green);font-size:1rem">check_circle</span> Results saved`;
-
-      // Build a results-like object from stored data
-      const r = {
-        score:      data.quizScore  ?? 0,
-        total:      data.quizTotal  ?? 20,
-        raw:        data.quizRaw    ?? 0,
-        categories: data.quizCategories ?? { conjugation:{correct:0,total:0}, vocab:{correct:0,total:0}, grammar:{correct:0,total:0} },
-        answers:    data.quizAnswers ?? [],
-      };
-      renderResults(r);
+    // ── Average helper ────────────────────────────────────────────────
+    function computeAverage(attempts) {
+      if (!attempts.length) return "—";
+      const sum = attempts.reduce((s, a) => s + (a.score ?? 0), 0);
+      return Math.round((sum / attempts.length) * 10) / 10;
     }
 
-    async function saveResults(user, results) {
+    // ── Render results (from a live quiz result or stored attempt) ────
+    function renderResultsFromData(r, avg, attemptCount) {
+      // Average row
+      const avgRow = document.getElementById("avgScoreRow");
+      if (avg !== undefined && attemptCount >= 1) {
+        avgRow.style.display = "flex";
+        document.getElementById("avgScoreVal").textContent     = avg;
+        document.getElementById("avgAttemptCount").textContent =
+          attemptCount === 1 ? "1 attempt" : `${attemptCount} attempts`;
+      } else {
+        avgRow.style.display = "none";
+      }
+
+      // Hide saving indicator if viewing old results (no saving needed)
+      if (r._viewOnly) {
+        const ind = document.getElementById("savingIndicator");
+        ind.classList.remove("saving");
+        document.getElementById("savingText").innerHTML =
+          `<span class="material-icons-round" style="color:var(--green);font-size:1rem">check_circle</span> Results saved`;
+      }
+
+      renderResults(r);
+
+      // Retake button — goes back to intro
+      document.getElementById("btnRetakeQuiz").onclick = () => {
+        // Reset quiz screen progress bar for fresh start
+        document.getElementById("progressFill").style.width = "0%";
+        document.getElementById("progressLabel").textContent = "1 / 20";
+        showScreen("intro");
+      };
+    }
+
+    async function saveResults(user, results, newAvg) {
       const indicator = document.getElementById("savingIndicator");
       const txt       = document.getElementById("savingText");
       indicator.classList.add("saving");
@@ -1584,17 +1634,25 @@
 
       try {
         const userRef = doc(db, "users", user.uid);
+
+        // Append this attempt to the array; update top-level convenience fields
+        const attempt = {
+          score:      results.score,
+          total:      results.total,
+          raw:        results.raw,
+          categories: results.categories,
+          takenAt:    new Date().toISOString(),
+        };
+
         await setDoc(userRef, {
           uid:              user.uid,
           displayName:      user.displayName || "",
           email:            user.email || "",
           photoURL:         user.photoURL || "",
           hasCompletedQuiz: true,
-          quizScore:        results.score,
-          quizTotal:        results.total,
-          quizRaw:          results.raw,
-          quizCategories:   results.categories,
-          quizAnswers:      results.answers,
+          quizScore:        results.score,   // most recent
+          quizAvgScore:     newAvg,
+          quizAttempts:     arrayUnion(attempt),
           quizTakenAt:      serverTimestamp(),
         }, { merge: true });
 
