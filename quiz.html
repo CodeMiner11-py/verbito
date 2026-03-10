@@ -1512,6 +1512,45 @@
       renderQuestion();
     }
 
+    // ── Worker URL ────────────────────────────────────────────────────
+    const WORKER_URL = "https://verbito-lesson-generator.nameless-cherry-998c.workers.dev";
+
+    // ── Profile ID builder ────────────────────────────────────────────
+    // Mirrors the logic in the Worker's profile.js
+    function buildProfileId(results) {
+      function bucket(correct, total) {
+        if (total === 0) return "mid";
+        const pct = correct / total;
+        if (pct < 0.45) return "weak";
+        if (pct < 0.72) return "mid";
+        return "strong";
+      }
+      const c = bucket(results.categories.conjugation.correct, results.categories.conjugation.total);
+      const v = bucket(results.categories.vocab.correct,        results.categories.vocab.total);
+      const g = bucket(results.categories.grammar.correct,      results.categories.grammar.total);
+      const d = Math.max(1, Math.min(5, Math.round(
+        results.answers.length > 0
+          ? results.answers.reduce((s, a) => s + a.difficulty, 0) / results.answers.length
+          : 2
+      )));
+      return `conj-${c}_vocab-${v}_grammar-${g}_diff-${d}`;
+    }
+
+    // ── Trigger lesson generation (fire and forget) ───────────────────
+    async function triggerLessonGeneration(profileId) {
+      try {
+        await fetch(`${WORKER_URL}/generate-lessons`, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ profileId }),
+        });
+        console.log("Lesson generation triggered for profile:", profileId);
+      } catch (e) {
+        // Non-fatal — lessons will generate next time they visit the lessons page
+        console.warn("Lesson generation trigger failed (non-fatal):", e.message);
+      }
+    }
+
     // ── Finish & save ─────────────────────────────────────────────────
     async function finishQuiz(user, quiz) {
       const results = quiz.getResults();
@@ -1527,8 +1566,14 @@
       const newAvg     = computeAverage(allScores.map(s => ({ score: s })));
       const attemptNum = allScores.length;
 
+      // Build profile ID from this attempt's results
+      const profileId = buildProfileId(results);
+
       renderResultsFromData(results, newAvg, attemptNum);
-      await saveResults(user, results, newAvg);
+      await saveResults(user, results, newAvg, profileId);
+
+      // Fire-and-forget — generate lessons in the background
+      triggerLessonGeneration(profileId);
     }
 
     function renderResults(r) {
@@ -1626,7 +1671,7 @@
       };
     }
 
-    async function saveResults(user, results, newAvg) {
+    async function saveResults(user, results, newAvg, profileId) {
       const indicator = document.getElementById("savingIndicator");
       const txt       = document.getElementById("savingText");
       indicator.classList.add("saving");
@@ -1635,12 +1680,12 @@
       try {
         const userRef = doc(db, "users", user.uid);
 
-        // Append this attempt to the array; update top-level convenience fields
         const attempt = {
           score:      results.score,
           total:      results.total,
           raw:        results.raw,
           categories: results.categories,
+          profileId,
           takenAt:    new Date().toISOString(),
         };
 
@@ -1650,8 +1695,9 @@
           email:            user.email || "",
           photoURL:         user.photoURL || "",
           hasCompletedQuiz: true,
-          quizScore:        results.score,   // most recent
+          quizScore:        results.score,
           quizAvgScore:     newAvg,
+          lessonProfile:    profileId,        // ← used by lessons page
           quizAttempts:     arrayUnion(attempt),
           quizTakenAt:      serverTimestamp(),
         }, { merge: true });
