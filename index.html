@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verbito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Funnel+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #C81C1C;
+      --red-dark: #9e1515;
+      --red-light: rgba(200,28,28,0.08);
+      --bg: #f7f4f1;
+      --white: #ffffff;
+      --dark: #1c1410;
+      --gray: #6b6560;
+      --border: #e8e2dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── PROGRESS STRIP ── */
+    .progress-banner {
+      background: var(--red);
+      color: white;
+      text-align: center;
+      padding: 0.7rem 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .progress-banner a {
+      color: white;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.2s;
+    }
+
+    .progress-banner a:hover { opacity: 0.8; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 38px;
+      animation: wobble 4s ease-in-out infinite;
+    }
+
+    .nav-logo span {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+      transition: color 0.2s;
+    }
+
+    .nav-center a:hover { color: var(--red); }
+
+    .nav-right {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+    }
+
+    .btn-outline-sm {
+      padding: 0.45rem 1.1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dark);
+      text-decoration: none;
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline-sm:hover { border-color: var(--red); color: var(--red); }
+
+    .btn-red-sm {
+      padding: 0.45rem 1.2rem;
+      background: var(--red);
+      border: 1.5px solid var(--red);
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-red-sm:hover { background: var(--red-dark); transform: scale(1.03); }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,28,28,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--red-light);
+      border: 1.5px solid rgba(200,28,28,0.2);
+      color: var(--red);
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.6rem;
+      letter-spacing: 0.3px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 1.3rem;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+
+    .hero h1 .red { color: var(--red); }
+
+    .hero h1 .underline-word {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero h1 .underline-word::after {
+      content: '';
+      position: absolute;
+      bottom: 6px; left: 0;
+      width: 100%; height: 5px;
+      background: var(--red);
+      border-radius: 3px;
+      opacity: 0.22;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--gray);
+      max-width: 500px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(200,28,28,0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(200,28,28,0.38);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--dark);
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--red); transform: translateY(-2px); }
+
+    /* ── FREE BADGE ── */
+    .free-banner {
+      margin-top: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--gray);
+      animation: fadeUp 0.6s ease 0.4s both;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .free-banner:hover { border-color: var(--red); color: var(--dark); }
+
+    .free-banner .tag {
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+    }
+
+    /* ── VERB CHIPS ── */
+    .verb-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      justify-content: center;
+      margin-top: 3rem;
+      max-width: 580px;
+      animation: fadeUp 0.7s ease 0.5s both;
+    }
+
+    .chip {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+
+    .chip:hover { transform: translateY(-3px); border-color: var(--red); }
+    .chip .tense { color: var(--red); font-size: 0.73rem; display: block; }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 5rem 2rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.7rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: 'Funnel Display', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 18px;
+      padding: 1.8rem;
+      border: 1.5px solid var(--border);
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      border-color: var(--red);
+    }
+
+    .feature-icon { font-size: 2.2rem; margin-bottom: 0.9rem; display: block; }
+
+    .feature-card h3 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+    }
+
+    .feature-card p { color: var(--gray); font-size: 0.93rem; line-height: 1.65; }
+
+    /* ── TENSES ── */
+    .tenses-section {
+      background: var(--dark);
+      padding: 5rem 2rem;
+      color: white;
+    }
+
+    .tenses-inner { max-width: 1000px; margin: 0 auto; }
+    .tenses-section .section-label { color: #f87171; }
+    .tenses-section .section-title { color: white; }
+
+    .tenses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .tense-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .tense-pill:hover {
+      background: rgba(200,28,28,0.2);
+      border-color: rgba(200,28,28,0.5);
+      transform: scale(1.04);
+    }
+
+    .tense-pill .tense-name {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .tense-pill .tense-example {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* ── CTA ── */
+    .cta-banner {
+      background: var(--red);
+      padding: 5rem 2rem;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '¡Vamos!';
+      position: absolute;
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 11rem;
+      font-weight: 800;
+      opacity: 0.06;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Funnel Display', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 0.9rem;
+    }
+
+    .cta-banner p { font-size: 1.08rem; opacity: 0.85; margin-bottom: 2rem; }
+
+    .btn-white {
+      background: white;
+      color: var(--red);
+      padding: 0.85rem 2.4rem;
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.22); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    footer strong { color: white; }
+
+    .material-icons-round {
+      font-size: 1.1em;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .feature-icon .material-icons-round {
+      font-size: 2rem;
+      color: var(--red);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-3deg); }
+      50%       { transform: rotate(3deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PROGRESS STRIP -->
+  <div class="progress-banner">
+    <span class="material-icons-round">location_on</span> See Where You Are &nbsp;·&nbsp; <a href="continue.html">Track your progress →</a>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="bubble.png" alt="Verbito logo" />
+      <span>Verbito</span>
+    </a>
+    <ul class="nav-center">
+      <li><a href="verb_conjugator.html">Verb Lookup</a></li>
+      <li><a href="/tenses">Tenses</a></li>
+      <li><a href="/quiz">Quiz</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="continue.html" class="btn-outline-sm">Log In</a>
+      <a href="continue.html" class="btn-red-sm">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><span class="material-icons-round">translate</span> Spanish Grammar, Finally Makes Sense</div>
+    <h1>Master Spanish<br><span class="red"><span class="underline-word">Conjugations</span></span><br>Without the Pain</h1>
+    <p>Look up any verb, explore every tense, and drill conjugations with quizzes — all in one place.</p>
+    <div class="hero-buttons">
+      <a href="/quiz" class="btn-primary"><span class="material-icons-round">quiz</span> Take a Quiz</a>
+      <a href="verb_conjugator.html" class="btn-secondary"><span class="material-icons-round">search</span> Look Up a Verb</a>
+    </div>
+    <a href="verb_conjugator.html" class="free-banner">
+      <span class="tag">FREE</span>
+      No sign-in needed &nbsp;·&nbsp; Verb Conjugator is fully free →
+    </a>
+    <div class="verb-chips">
+      <div class="chip">hablar <span class="tense">Present</span></div>
+      <div class="chip">ser / estar <span class="tense">The big two</span></div>
+      <div class="chip">tener <span class="tense">Irregular</span></div>
+      <div class="chip">ir <span class="tense">Preterite</span></div>
+      <div class="chip">poder <span class="tense">Subjunctive</span></div>
+      <div class="chip">hacer <span class="tense">Future</span></div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <p class="section-label">What Verbito Does</p>
+    <h2 class="section-title">Everything you need to<br>actually understand verbs</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon"><span class="material-icons-round">search</span></span>
+        <h3>Verb Lookup</h3>
+        <p>Search any Spanish verb and instantly see the full conjugation table across all tenses.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon"><span class="material-icons-round">menu_book</span></span>
+        <h3>Tense Guides</h3>
+        <p>Plain-English explanations of how each tense works — when to use it, how to form it, why it matters.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon"><span class="material-icons-round">quiz</span></span>
+        <h3>Conjugation Quizzes</h3>
+        <p>Type the correct conjugation and get instant feedback. Practice specific tenses or go random.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon"><span class="material-icons-round">bolt</span></span>
+        <h3>Irregular Verbs</h3>
+        <p>All the tricky irregular verbs — ser, estar, ir, tener, hacer, and many more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TENSES -->
+  <section class="tenses-section">
+    <div class="tenses-inner">
+      <p class="section-label">Tenses Covered</p>
+      <h2 class="section-title">From Presente to Subjuntivo</h2>
+      <div class="tenses-grid">
+        <div class="tense-pill"><span class="tense-name">Presente</span><span class="tense-example">hablo, comes…</span></div>
+        <div class="tense-pill"><span class="tense-name">Pretérito</span><span class="tense-example">hablé, comiste…</span></div>
+        <div class="tense-pill"><span class="tense-name">Imperfecto</span><span class="tense-example">hablaba, comía…</span></div>
+        <div class="tense-pill"><span class="tense-name">Futuro</span><span class="tense-example">hablaré, comerás…</span></div>
+        <div class="tense-pill"><span class="tense-name">Condicional</span><span class="tense-example">hablaría…</span></div>
+        <div class="tense-pill"><span class="tense-name">Subjuntivo</span><span class="tense-example">hable, comas…</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <h2>Ready to actually get good?</h2>
+    <p>No vocabulary flashcards. No streaks. Just real grammar.</p>
+    <a href="continue.html" class="btn-white">Get Started Free →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Made with <span class="material-icons-round" style="color:#f87171;font-size:1rem;vertical-align:middle">favorite</span> for Spanish learners · <strong>Verbito</strong></p>
+  </footer>
+
+</body>
+</html>
