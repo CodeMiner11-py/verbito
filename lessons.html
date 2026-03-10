@@ -728,29 +728,31 @@
 
   // ── Auth ──────────────────────────────────────────────────────────
   onAuthStateChanged(auth, async (user) => {
+    console.log("Auth state:", user ? "signed in as " + user.uid : "not signed in");
     if (!user) { showScreen("auth"); return; }
 
-    // Read user doc
     const userSnap = await getDoc(doc(db, "users", user.uid));
-console.log("userSnap exists:", userSnap.exists());
-console.log("userData:", userSnap.data());
-if (!userSnap.exists() || !userSnap.data().lessonProfile) {
-  showScreen("no-quiz"); return;
-}
+    console.log("User doc exists:", userSnap.exists());
+    console.log("User data:", userSnap.data());
 
-const profileId = userSnap.data().lessonProfile;
-console.log("profileId:", profileId);
-
-const lessonsSnap = await getDoc(doc(db, "lessons", profileId));
-console.log("lessonsSnap exists:", lessonsSnap.exists());
-console.log("lessonsData:", lessonsSnap.data());
+    if (!userSnap.exists() || !userSnap.data().lessonProfile) {
+      console.log("No lessonProfile found — showing no-quiz screen");
+      showScreen("no-quiz"); return;
+    }
 
     const profileId = userSnap.data().lessonProfile;
+    console.log("profileId:", profileId);
     document.getElementById("profileBadgeText").textContent = profileId;
+
+    const lessonsSnap = await getDoc(doc(db, "lessons", profileId));
+    console.log("Lessons doc exists:", lessonsSnap.exists());
+    console.log("Lessons status:", lessonsSnap.data()?.status);
+    console.log("Lessons data:", lessonsSnap.data());
 
     // Watch lessons doc
     const lessonsRef = doc(db, "lessons", profileId);
     const unsub = onSnapshot(lessonsRef, (snap) => {
+      console.log("onSnapshot fired — exists:", snap.exists(), "status:", snap.data()?.status);
       if (!snap.exists()) {
         showScreen("pending"); return;
       }
@@ -766,6 +768,7 @@ console.log("lessonsData:", lessonsSnap.data());
         return;
       }
       if (data.status === "ready") {
+        console.log("Lessons ready — rendering", data.lessons?.length, "lessons");
         unsub();
         renderLessons(data.lessons, profileId);
       }
