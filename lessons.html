@@ -21,612 +21,218 @@
       --yellow:       #92400e;
       --yellow-light: #fef3c7;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-      min-height: 100vh;
-    }
-
-    /* ── NAV ─────────────────────────────────── */
+    /* NAV */
     nav {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
     }
-    .nav-logo {
-      font-family: 'Funnel Display', sans-serif;
-      font-weight: 800;
-      font-size: 1.4rem;
-      color: var(--red);
-      text-decoration: none;
+    .nav-logo { font-family: 'Funnel Display', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--red); text-decoration: none; }
+    .nav-tabs { display: flex; gap: 0.25rem; }
+    .nav-tab {
+      padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500;
+      color: var(--gray); cursor: pointer; border: none; background: none; transition: background 0.15s, color 0.15s;
     }
-    .nav-back {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--gray);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .nav-back:hover { color: var(--dark); }
-    .nav-back .material-icons-round { font-size: 1.1rem; }
+    .nav-tab:hover { background: var(--bg); color: var(--dark); }
+    .nav-tab.active { background: var(--red-light); color: var(--red); font-weight: 600; }
 
-    /* ── SCREENS ─────────────────────────────── */
+    /* SCREENS */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ── LOADING ─────────────────────────────── */
-    #screen-loading.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 60px);
-      gap: 1rem;
+    /* Centered screens */
+    .screen-center {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      min-height: calc(100vh - 60px); gap: 1rem; text-align: center; padding: 2rem;
     }
-    .spinner {
-      width: 36px; height: 36px;
-      border: 3px solid var(--border);
-      border-top-color: var(--red);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+    .screen-center.active { display: flex; }
+    .screen-center .material-icons-round { font-size: 3rem; color: var(--gray); }
+    .screen-center h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
+    .screen-center p { color: var(--gray); max-width: 380px; }
+    .screen-center a, .screen-center .btn-red {
+      display: inline-block; margin-top: 0.5rem;
+      background: var(--red); color: #fff;
+      padding: 0.75rem 1.75rem; border-radius: 8px;
+      font-weight: 600; text-decoration: none; border: none; cursor: pointer; font-family: inherit; font-size: 1rem;
     }
+
+    /* SPINNER */
+    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.75s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text {
-      font-size: 0.9rem;
-      color: var(--gray);
-    }
+    .loading-text { font-size: 0.9rem; color: var(--gray); }
 
-    /* ── AUTH GATE ────────────────────────────── */
-    #screen-auth.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 60px);
-      gap: 1rem;
-      text-align: center;
-      padding: 2rem;
-    }
-    #screen-auth .material-icons-round { font-size: 3rem; color: var(--gray); }
-    #screen-auth h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
-    #screen-auth p { color: var(--gray); }
-    #screen-auth a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      background: var(--red);
-      color: #fff;
-      padding: 0.75rem 1.75rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    /* ── NO QUIZ ─────────────────────────────── */
-    #screen-no-quiz.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 60px);
-      gap: 1rem;
-      text-align: center;
-      padding: 2rem;
-    }
-    #screen-no-quiz .material-icons-round { font-size: 3rem; color: var(--gray); }
-    #screen-no-quiz h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
-    #screen-no-quiz p { color: var(--gray); max-width: 380px; }
-    #screen-no-quiz a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      background: var(--red);
-      color: #fff;
-      padding: 0.75rem 1.75rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    /* ── PENDING ─────────────────────────────── */
-    #screen-pending.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 60px);
-      gap: 1rem;
-      text-align: center;
-      padding: 2rem;
-    }
-    #screen-pending h2 { font-family: 'Funnel Display', sans-serif; font-size: 1.5rem; }
-    #screen-pending p { color: var(--gray); max-width: 360px; }
-    .pending-dots {
-      display: flex;
-      gap: 0.4rem;
-    }
-    .pending-dots span {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--red);
-      animation: pulse-dot 1.2s ease-in-out infinite;
-    }
+    /* PENDING DOTS */
+    .pending-dots { display: flex; gap: 0.4rem; }
+    .pending-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: pdot 1.2s ease-in-out infinite; }
     .pending-dots span:nth-child(2) { animation-delay: 0.2s; }
     .pending-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes pulse-dot {
-      0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
-      40%           { opacity: 1;    transform: scale(1); }
-    }
+    @keyframes pdot { 0%,80%,100%{opacity:.25;transform:scale(.85)} 40%{opacity:1;transform:scale(1)} }
 
-    /* ── LESSONS LIST ────────────────────────── */
-    #screen-lessons {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    .lessons-header {
-      margin-bottom: 2rem;
-    }
-    .lessons-eyebrow {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.4rem;
-    }
-    .lessons-title {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--dark);
-      margin-bottom: 0.5rem;
-    }
-    .lessons-subtitle {
-      color: var(--gray);
-      font-size: 0.95rem;
-    }
-    .profile-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: var(--red-light);
-      color: var(--red);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 0.3rem 0.75rem;
-      border-radius: 20px;
-      margin-top: 0.75rem;
-    }
+    /* ── LESSONS LIST ── */
+    #screen-lessons { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .lessons-header { margin-bottom: 2rem; }
+    .lessons-eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem; }
+    .lessons-title { font-family: 'Funnel Display', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .lessons-subtitle { color: var(--gray); font-size: 0.95rem; }
+    .profile-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--red-light); color: var(--red); font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 20px; margin-top: 0.75rem; }
     .profile-badge .material-icons-round { font-size: 0.95rem; }
-
-    .lesson-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
+    .lesson-cards { display: flex; flex-direction: column; gap: 0.75rem; }
     .lesson-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
-      text-decoration: none;
-      color: inherit;
+      background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+      cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
     }
-    .lesson-card:hover {
-      border-color: #d4cdc6;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-      transform: translateY(-1px);
-    }
-
+    .lesson-card:hover { border-color: #d4cdc6; box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-1px); }
     .lesson-number {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Funnel Display', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--gray);
-      flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Funnel Display', sans-serif; font-weight: 700; font-size: 1rem; color: var(--gray); flex-shrink: 0;
     }
-
-    .lesson-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .lesson-title {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 0.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .lesson-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-    .lesson-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.78rem;
-      color: var(--gray);
-    }
+    .lesson-info { flex: 1; min-width: 0; }
+    .lesson-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lesson-meta { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .lesson-meta-item { display: flex; align-items: center; gap: 0.25rem; font-size: 0.78rem; color: var(--gray); }
     .lesson-meta-item .material-icons-round { font-size: 0.9rem; }
-
-    .cat-badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 0.2rem 0.55rem;
-      border-radius: 20px;
-    }
+    .cat-badge { font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 20px; }
     .cat-badge.conjugation { background: #dbeafe; color: #1d4ed8; }
-    .cat-badge.vocab       { background: #dcfce7; color: #15803d; }
-    .cat-badge.grammar     { background: #fef3c7; color: #92400e; }
-
-    .lesson-arrow {
-      color: var(--border);
-      flex-shrink: 0;
-    }
+    .cat-badge.vocab       { background: var(--green-light); color: var(--green); }
+    .cat-badge.grammar     { background: var(--yellow-light); color: var(--yellow); }
+    .lesson-arrow { color: var(--border); flex-shrink: 0; }
     .lesson-card:hover .lesson-arrow { color: var(--gray); }
-
-    /* ── LESSON DETAIL ───────────────────────── */
-    #screen-detail {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 5rem;
+    .best-score-badge {
+      font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 20px;
+      background: var(--green-light); color: var(--green);
     }
 
-    .detail-header {
-      margin-bottom: 2rem;
-    }
+    /* ── DETAIL ── */
+    #screen-detail { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
     .detail-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--gray);
-      cursor: pointer;
-      margin-bottom: 1.25rem;
-      transition: color 0.15s;
-      background: none;
-      border: none;
-      padding: 0;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.85rem; font-weight: 500; color: var(--gray); cursor: pointer;
+      margin-bottom: 1.25rem; transition: color 0.15s; background: none; border: none; padding: 0;
     }
     .detail-back:hover { color: var(--dark); }
     .detail-back .material-icons-round { font-size: 1.1rem; }
-
-    .detail-eyebrow {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .detail-title {
-      font-family: 'Funnel Display', sans-serif;
-      font-size: 1.75rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-    .detail-summary {
-      color: var(--gray);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-    .detail-stats {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .detail-stat {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.8rem;
-      color: var(--gray);
-    }
+    .detail-eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .detail-title { font-family: 'Funnel Display', sans-serif; font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .detail-summary { color: var(--gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .detail-stats { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .detail-stat { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--gray); }
     .detail-stat .material-icons-round { font-size: 1rem; }
 
-    /* ── QUESTIONS ───────────────────────────── */
-    .questions-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
+    /* QUESTIONS */
+    .questions-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .question-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .question-header { padding: 1.25rem 1.5rem 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+    .question-num { font-size: 0.75rem; font-weight: 700; color: var(--gray); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.5rem; flex-shrink: 0; margin-top: 2px; }
+    .question-text { font-weight: 600; font-size: 0.95rem; line-height: 1.5; flex: 1; }
 
-    .question-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .question-header {
-      padding: 1.25rem 1.5rem 0.75rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-    .question-num {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--gray);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.2rem 0.5rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .question-text {
-      font-weight: 600;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      flex: 1;
-    }
-
-    /* Multiple choice */
-    .mc-options {
-      padding: 0 1.5rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .mc-option {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-      font-size: 0.9rem;
-    }
-    .mc-option:hover:not(.selected):not(.disabled) {
-      border-color: #c4bcb5;
-      background: var(--bg);
-    }
-    .mc-option .opt-letter {
-      width: 24px; height: 24px;
-      border-radius: 6px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--gray);
-      flex-shrink: 0;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .mc-option.correct {
-      border-color: #86efac;
-      background: var(--green-light);
-    }
-    .mc-option.correct .opt-letter {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-    .mc-option.wrong {
-      border-color: #fca5a5;
-      background: #fef2f2;
-    }
-    .mc-option.wrong .opt-letter {
-      background: #dc2626;
-      color: white;
-      border-color: #dc2626;
-    }
-    .mc-option.reveal-correct {
-      border-color: #86efac;
-      background: var(--green-light);
-    }
-    .mc-option.reveal-correct .opt-letter {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
+    /* MC */
+    .mc-options { padding: 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .mc-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; border: 1.5px solid var(--border); border-radius: 9px; cursor: pointer; transition: border-color 0.15s, background 0.15s; font-size: 0.9rem; }
+    .mc-option:hover:not(.disabled) { border-color: #c4bcb5; background: var(--bg); }
+    .mc-option .opt-letter { width: 24px; height: 24px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: var(--gray); flex-shrink: 0; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .mc-option.correct { border-color: #86efac; background: var(--green-light); }
+    .mc-option.correct .opt-letter { background: var(--green); color: white; border-color: var(--green); }
+    .mc-option.wrong { border-color: #fca5a5; background: #fef2f2; }
+    .mc-option.wrong .opt-letter { background: #dc2626; color: white; border-color: #dc2626; }
+    .mc-option.reveal-correct { border-color: #86efac; background: var(--green-light); }
+    .mc-option.reveal-correct .opt-letter { background: var(--green); color: white; border-color: var(--green); }
     .mc-option.disabled { pointer-events: none; }
 
     /* Translation */
-    .tr-input-area {
-      padding: 0 1.5rem 1.25rem;
-    }
-    .tr-input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.95rem;
-      background: var(--white);
-      color: var(--dark);
-      transition: border-color 0.15s;
-      outline: none;
-    }
+    .tr-input-area { padding: 0 1.5rem 1.25rem; }
+    .tr-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; background: var(--white); color: var(--dark); transition: border-color 0.15s; outline: none; }
     .tr-input:focus { border-color: var(--red); }
     .tr-input.correct { border-color: #86efac; background: var(--green-light); }
     .tr-input.wrong   { border-color: #fca5a5; background: #fef2f2; }
     .tr-input:disabled { pointer-events: none; }
-    .tr-check-btn {
-      margin-top: 0.6rem;
-      padding: 0.6rem 1.25rem;
-      background: var(--red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
+    .tr-check-btn { margin-top: 0.6rem; padding: 0.6rem 1.25rem; background: var(--red); color: white; border: none; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: background 0.15s; }
     .tr-check-btn:hover { background: var(--red-dark); }
     .tr-check-btn:disabled { opacity: 0.5; pointer-events: none; }
 
     /* True/False */
-    .tf-options {
-      padding: 0 1.5rem 1.25rem;
-      display: flex;
-      gap: 0.75rem;
-    }
-    .tf-option {
-      flex: 1;
-      padding: 0.75rem;
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
-      cursor: pointer;
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: border-color 0.15s, background 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-    }
+    .tf-options { padding: 0 1.5rem 1.25rem; display: flex; gap: 0.75rem; }
+    .tf-option { flex: 1; padding: 0.75rem; border: 1.5px solid var(--border); border-radius: 9px; cursor: pointer; text-align: center; font-weight: 600; font-size: 0.9rem; transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
     .tf-option .material-icons-round { font-size: 1.1rem; }
-    .tf-option:hover:not(.disabled) {
-      border-color: #c4bcb5;
-      background: var(--bg);
-    }
-    .tf-option.correct {
-      border-color: #86efac;
-      background: var(--green-light);
-      color: var(--green);
-    }
-    .tf-option.wrong {
-      border-color: #fca5a5;
-      background: #fef2f2;
-      color: #dc2626;
-    }
-    .tf-option.reveal-correct {
-      border-color: #86efac;
-      background: var(--green-light);
-      color: var(--green);
-    }
+    .tf-option:hover:not(.disabled) { border-color: #c4bcb5; background: var(--bg); }
+    .tf-option.correct { border-color: #86efac; background: var(--green-light); color: var(--green); }
+    .tf-option.wrong   { border-color: #fca5a5; background: #fef2f2; color: #dc2626; }
+    .tf-option.reveal-correct { border-color: #86efac; background: var(--green-light); color: var(--green); }
     .tf-option.disabled { pointer-events: none; }
 
     /* Conjugation chart */
-    .chart-area {
-      padding: 0 1.5rem 1.25rem;
-    }
-    .conj-chart {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-    }
-    .conj-cell {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.6rem 0.9rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    .conj-pronoun {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--gray);
-      min-width: 55px;
-    }
-    .conj-value {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--dark);
-    }
-    .conj-input {
-      flex: 1;
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      padding: 0.3rem 0.6rem;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem;
-      outline: none;
-      background: white;
-      transition: border-color 0.15s;
-    }
+    .chart-area { padding: 0 1.5rem 1.25rem; }
+    .conj-chart { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .conj-cell { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+    .conj-pronoun { font-size: 0.78rem; font-weight: 600; color: var(--gray); min-width: 55px; }
+    .conj-value { font-size: 0.9rem; font-weight: 500; color: var(--dark); }
+    .conj-input { flex: 1; border: 1.5px solid var(--border); border-radius: 6px; padding: 0.3rem 0.6rem; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; outline: none; background: white; transition: border-color 0.15s; }
     .conj-input:focus { border-color: var(--red); }
     .conj-input.correct { border-color: #86efac; background: var(--green-light); }
     .conj-input.wrong   { border-color: #fca5a5; background: #fef2f2; }
     .conj-input:disabled { pointer-events: none; }
-    .chart-check-btn {
-      padding: 0.6rem 1.25rem;
-      background: var(--red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
+    .chart-check-btn { padding: 0.6rem 1.25rem; background: var(--red); color: white; border: none; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: background 0.15s; }
     .chart-check-btn:hover { background: var(--red-dark); }
     .chart-check-btn:disabled { opacity: 0.5; pointer-events: none; }
 
     /* Explanation */
-    .explanation {
-      margin: 0 1.5rem 1.25rem;
-      padding: 0.75rem 1rem;
-      background: var(--bg);
-      border-radius: 8px;
-      border-left: 3px solid var(--border);
-      font-size: 0.85rem;
-      color: var(--gray);
-      line-height: 1.5;
-      display: none;
-    }
+    .explanation { margin: 0 1.5rem 1.25rem; padding: 0.75rem 1rem; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--border); font-size: 0.85rem; color: var(--gray); line-height: 1.5; display: none; }
     .explanation.show { display: block; }
     .explanation.correct-exp { border-left-color: var(--green); }
     .explanation.wrong-exp   { border-left-color: #dc2626; }
     .explanation strong { color: var(--dark); }
 
-    /* ── FOOTER ──────────────────────────────── */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: var(--gray);
-      border-top: 1px solid var(--border);
+    /* Lesson complete banner */
+    .lesson-complete {
+      display: none; margin-top: 2rem; padding: 1.5rem;
+      background: var(--white); border: 1px solid var(--border); border-radius: 16px; text-align: center;
     }
+    .lesson-complete.show { display: block; }
+    .complete-icon { font-size: 2.5rem; color: var(--green); }
+    .complete-score { font-family: 'Funnel Display', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--dark); margin: 0.5rem 0 0.25rem; }
+    .complete-label { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; }
+    .complete-breakdown { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .breakdown-item { text-align: center; }
+    .breakdown-value { font-weight: 700; font-size: 1.1rem; }
+    .breakdown-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; }
+    .complete-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { padding: 0.7rem 1.5rem; background: var(--red); color: white; border: none; border-radius: 9px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: background 0.15s; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary { padding: 0.7rem 1.5rem; background: var(--white); color: var(--dark); border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: border-color 0.15s; }
+    .btn-secondary:hover { border-color: #c4bcb5; }
+
+    /* ── HISTORY TAB ── */
+    #screen-history { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .history-header { margin-bottom: 2rem; }
+    .history-title { font-family: 'Funnel Display', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .history-subtitle { color: var(--gray); font-size: 0.95rem; }
+    .history-empty { text-align: center; padding: 4rem 2rem; color: var(--gray); }
+    .history-empty .material-icons-round { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .log-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+    .log-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .log-score-circle {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Funnel Display', sans-serif; font-weight: 800; font-size: 1rem;
+    }
+    .log-score-circle.great  { background: var(--green-light); color: var(--green); }
+    .log-score-circle.ok     { background: var(--yellow-light); color: var(--yellow); }
+    .log-score-circle.poor   { background: #fef2f2; color: #dc2626; }
+    .log-info { flex: 1; min-width: 0; }
+    .log-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .log-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .log-meta-item { display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: var(--gray); }
+    .log-meta-item .material-icons-round { font-size: 0.85rem; }
+
+    footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--gray); border-top: 1px solid var(--border); }
     footer a { color: var(--red); text-decoration: none; }
   </style>
 </head>
@@ -634,70 +240,89 @@
 
 <nav>
   <a href="index.html" class="nav-logo">Verbito</a>
-  <a href="index.html" class="nav-back">
-    <span class="material-icons-round">arrow_back</span>
-    Home
-  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tabLessons" onclick="switchTab('lessons')">Lessons</button>
+    <button class="nav-tab" id="tabHistory" onclick="switchTab('history')">History</button>
+  </div>
 </nav>
 
 <!-- Loading -->
-<div id="screen-loading" class="screen active">
+<div id="screen-loading" class="screen-center active">
   <div class="spinner"></div>
   <p class="loading-text">Loading your lessons…</p>
 </div>
 
 <!-- Auth gate -->
-<div id="screen-auth" class="screen">
+<div id="screen-auth" class="screen-center">
   <span class="material-icons-round">lock</span>
   <h2>Sign in to view lessons</h2>
-  <p>Your personalised lessons are waiting. Sign in to continue.</p>
+  <p>Your personalised lessons are waiting.</p>
   <a href="continue.html">Sign In</a>
 </div>
 
-<!-- No quiz taken -->
-<div id="screen-no-quiz" class="screen">
+<!-- No quiz -->
+<div id="screen-no-quiz" class="screen-center">
   <span class="material-icons-round">quiz</span>
   <h2>Take the quiz first</h2>
-  <p>Your lessons are generated from your quiz results. Take the placement quiz to unlock personalised lessons.</p>
+  <p>Your lessons are generated from your quiz results. Take the placement quiz to get started.</p>
   <a href="quiz.html">Take the Quiz</a>
 </div>
 
-<!-- Pending generation -->
-<div id="screen-pending" class="screen">
-  <div class="pending-dots">
-    <span></span><span></span><span></span>
-  </div>
+<!-- Pending -->
+<div id="screen-pending" class="screen-center">
+  <div class="pending-dots"><span></span><span></span><span></span></div>
   <h2>Generating your lessons…</h2>
-  <p>We're building lessons tailored to your quiz results. This takes about 2 minutes.</p>
+  <p>We're building lessons tailored to your results. This takes about 2 minutes.</p>
 </div>
 
 <!-- Lessons list -->
 <div id="screen-lessons" class="screen">
-  <div class="lessons-header">
-    <div class="lessons-eyebrow">Your Lessons</div>
-    <h1 class="lessons-title">Keep Learning</h1>
-    <p class="lessons-subtitle">6 lessons personalised to your quiz results.</p>
-    <div class="profile-badge" id="profileBadge">
-      <span class="material-icons-round">tune</span>
-      <span id="profileBadgeText">Loading profile…</span>
+  <div style="max-width:860px;margin:0 auto;padding:2.5rem 1.5rem 4rem">
+    <div class="lessons-header">
+      <div class="lessons-eyebrow">Your Lessons</div>
+      <h1 class="lessons-title">Keep Learning</h1>
+      <p class="lessons-subtitle">6 lessons personalised to your quiz results.</p>
+      <div class="profile-badge">
+        <span class="material-icons-round">tune</span>
+        <span id="profileBadgeText">…</span>
+      </div>
     </div>
+    <div class="lesson-cards" id="lessonCards"></div>
   </div>
-  <div class="lesson-cards" id="lessonCards"></div>
 </div>
 
 <!-- Lesson detail -->
 <div id="screen-detail" class="screen">
-  <div class="detail-header">
+  <div style="max-width:720px;margin:0 auto;padding:2rem 1.5rem 5rem">
     <button class="detail-back" id="btnBackToLessons">
-      <span class="material-icons-round">arrow_back</span>
-      All Lessons
+      <span class="material-icons-round">arrow_back</span>All Lessons
     </button>
-    <div class="detail-eyebrow" id="detailEyebrow">Lesson 1</div>
+    <div class="detail-eyebrow" id="detailEyebrow"></div>
     <h2 class="detail-title" id="detailTitle"></h2>
     <p class="detail-summary" id="detailSummary"></p>
     <div class="detail-stats" id="detailStats"></div>
+    <div class="questions-list" id="questionsList"></div>
+    <div class="lesson-complete" id="lessonComplete">
+      <span class="material-icons-round complete-icon">emoji_events</span>
+      <div class="complete-score" id="completeScore"></div>
+      <div class="complete-label" id="completeLabel"></div>
+      <div class="complete-breakdown" id="completeBreakdown"></div>
+      <div class="complete-actions">
+        <button class="btn-primary" id="btnViewHistory">View History</button>
+        <button class="btn-secondary" id="btnBackFromComplete">All Lessons</button>
+      </div>
+    </div>
   </div>
-  <div class="questions-list" id="questionsList"></div>
+</div>
+
+<!-- History -->
+<div id="screen-history" class="screen">
+  <div class="history-header">
+    <div class="lessons-eyebrow">Your Progress</div>
+    <h1 class="history-title">Lesson History</h1>
+    <p class="history-subtitle">All your past lesson attempts and scores.</p>
+  </div>
+  <div id="historyContent"></div>
 </div>
 
 <footer>
@@ -705,9 +330,11 @@
 </footer>
 
 <script type="module">
-  import { initializeApp }                            from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged }              from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, onSnapshot }   from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+  import { initializeApp }                                    from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged }                      from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection,
+           addDoc, query, where, orderBy, getDocs,
+           onSnapshot, serverTimestamp }                      from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey:     "AIzaSyAscnVMEcj-U0wr_uU9cy32S2XGqs7wo34",
@@ -719,70 +346,95 @@
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
+  let currentUser   = null;
+  let allLessons    = [];
+  let currentLesson = null;
+  let currentLessonIndex = 0;
+
+  // Per-question tracking for current lesson attempt
+  let questionResults = [];
+
   // ── Screens ───────────────────────────────────────────────────────
   function showScreen(id) {
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".screen, .screen-center").forEach(s => s.classList.remove("active"));
     document.getElementById("screen-" + id).classList.add("active");
     window.scrollTo(0, 0);
   }
 
+  // ── Tab switching ─────────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+    document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add("active");
+    if (tab === "lessons") {
+      showScreen("lessons");
+    } else if (tab === "history") {
+      showScreen("history");
+      loadHistory();
+    }
+  };
+
   // ── Auth ──────────────────────────────────────────────────────────
   onAuthStateChanged(auth, async (user) => {
-    console.log("Auth state:", user ? "signed in as " + user.uid : "not signed in");
     if (!user) { showScreen("auth"); return; }
+    currentUser = user;
 
     const userSnap = await getDoc(doc(db, "users", user.uid));
-    console.log("User doc exists:", userSnap.exists());
-    console.log("User data:", userSnap.data());
-
     if (!userSnap.exists() || !userSnap.data().lessonProfile) {
-      console.log("No lessonProfile found — showing no-quiz screen");
       showScreen("no-quiz"); return;
     }
 
     const profileId = userSnap.data().lessonProfile;
-    console.log("profileId:", profileId);
     document.getElementById("profileBadgeText").textContent = profileId;
 
-    const lessonsSnap = await getDoc(doc(db, "lessons", profileId));
-    console.log("Lessons doc exists:", lessonsSnap.exists());
-    console.log("Lessons status:", lessonsSnap.data()?.status);
-    console.log("Lessons data:", lessonsSnap.data());
-
-    // Watch lessons doc
     const lessonsRef = doc(db, "lessons", profileId);
     const unsub = onSnapshot(lessonsRef, (snap) => {
-      console.log("onSnapshot fired — exists:", snap.exists(), "status:", snap.data()?.status);
-      if (!snap.exists()) {
-        showScreen("pending"); return;
-      }
+      if (!snap.exists()) { showScreen("pending"); return; }
       const data = snap.data();
-      if (data.status === "pending") {
-        showScreen("pending"); return;
-      }
+      if (data.status === "pending") { showScreen("pending"); return; }
       if (data.status === "error") {
         showScreen("pending");
         document.querySelector("#screen-pending h2").textContent = "Something went wrong";
         document.querySelector("#screen-pending p").textContent = "We couldn't generate your lessons. Please try again later.";
-        unsub();
-        return;
+        unsub(); return;
       }
       if (data.status === "ready") {
-        console.log("Lessons ready — rendering", data.lessons?.length, "lessons");
         unsub();
+        allLessons = data.lessons;
         renderLessons(data.lessons, profileId);
       }
     });
   });
 
   // ── Render lesson cards ───────────────────────────────────────────
-  function renderLessons(lessons, profileId) {
+  async function renderLessons(lessons, profileId) {
     showScreen("lessons");
-    document.getElementById("profileBadgeText").textContent = profileId;
+
+    // Load best scores for each lesson from logs
+    let bestScores = {};
+    if (currentUser) {
+      try {
+        const logsQ = query(
+          collection(db, "logs"),
+          where("uid", "==", currentUser.uid),
+          where("profileId", "==", profileId)
+        );
+        const logsSnap = await getDocs(logsQ);
+        logsSnap.forEach(d => {
+          const log = d.data();
+          const key = log.lessonId;
+          if (!bestScores[key] || log.score > bestScores[key]) {
+            bestScores[key] = log.score;
+            bestScores[key + "_total"] = log.total;
+          }
+        });
+      } catch (e) { console.warn("Could not load best scores:", e.message); }
+    }
+
     const container = document.getElementById("lessonCards");
     container.innerHTML = "";
-
     lessons.forEach((lesson, i) => {
+      const best = bestScores[lesson.id];
+      const bestTotal = bestScores[lesson.id + "_total"] ?? 10;
       const card = document.createElement("div");
       card.className = "lesson-card";
       card.innerHTML = `
@@ -799,111 +451,211 @@
               <span class="material-icons-round">schedule</span>
               ~${lesson.estimatedMinutes ?? 7} min
             </span>
+            ${best !== undefined ? `<span class="best-score-badge">Best: ${best}/${bestTotal}</span>` : ""}
           </div>
         </div>
         <span class="material-icons-round lesson-arrow">chevron_right</span>
       `;
-      card.addEventListener("click", () => renderDetail(lesson, i));
+      card.addEventListener("click", () => openLesson(lesson, i));
       container.appendChild(card);
     });
   }
 
-  // ── Render lesson detail ──────────────────────────────────────────
-  function renderDetail(lesson, index) {
+  // ── Open lesson ───────────────────────────────────────────────────
+  function openLesson(lesson, index) {
+    currentLesson      = lesson;
+    currentLessonIndex = index;
+    questionResults    = [];
+
     showScreen("detail");
 
     document.getElementById("detailEyebrow").innerHTML =
       `<span class="cat-badge ${lesson.category}" style="text-transform:capitalize">${lesson.category}</span>&nbsp; Lesson ${index + 1}`;
-    document.getElementById("detailTitle").textContent = lesson.title;
+    document.getElementById("detailTitle").textContent   = lesson.title;
     document.getElementById("detailSummary").textContent = lesson.summary ?? "";
     document.getElementById("detailStats").innerHTML = `
-      <span class="detail-stat">
-        <span class="material-icons-round">help_outline</span>
-        ${lesson.questions?.length ?? 0} questions
-      </span>
-      <span class="detail-stat">
-        <span class="material-icons-round">schedule</span>
-        ~${lesson.estimatedMinutes ?? 7} min
-      </span>
-      <span class="detail-stat">
-        <span class="material-icons-round">signal_cellular_alt</span>
-        Difficulty ${lesson.difficulty ?? 1}/5
-      </span>
+      <span class="detail-stat"><span class="material-icons-round">help_outline</span>${lesson.questions?.length ?? 0} questions</span>
+      <span class="detail-stat"><span class="material-icons-round">schedule</span>~${lesson.estimatedMinutes ?? 7} min</span>
+      <span class="detail-stat"><span class="material-icons-round">signal_cellular_alt</span>Difficulty ${lesson.difficulty ?? 1}/5</span>
     `;
+
+    const complete = document.getElementById("lessonComplete");
+    complete.classList.remove("show");
 
     const list = document.getElementById("questionsList");
     list.innerHTML = "";
-
     (lesson.questions ?? []).forEach((q, qi) => {
-      const card = buildQuestionCard(q, qi);
-      list.appendChild(card);
+      list.appendChild(buildQuestionCard(q, qi, lesson.questions.length));
     });
   }
 
-  document.getElementById("btnBackToLessons").addEventListener("click", () => showScreen("lessons"));
+  document.getElementById("btnBackToLessons").addEventListener("click", () => {
+    showScreen("lessons");
+  });
+  document.getElementById("btnBackFromComplete").addEventListener("click", () => {
+    showScreen("lessons");
+    renderLessons(allLessons, document.getElementById("profileBadgeText").textContent);
+  });
+  document.getElementById("btnViewHistory").addEventListener("click", () => {
+    switchTab("history");
+  });
+
+  // ── Record answer + check completion ─────────────────────────────
+  function recordAnswer(qi, correct, total) {
+    questionResults[qi] = correct;
+    const answered = questionResults.filter(r => r !== undefined).length;
+    if (answered === total) {
+      setTimeout(() => showLessonComplete(), 400);
+    }
+  }
+
+  // ── Lesson complete ───────────────────────────────────────────────
+  async function showLessonComplete() {
+    const total   = questionResults.length;
+    const correct = questionResults.filter(Boolean).length;
+    const pct     = correct / total;
+
+    let icon, label;
+    if (pct >= 0.8)      { icon = "emoji_events"; label = "Excellent work!"; }
+    else if (pct >= 0.5) { icon = "star";         label = "Good effort!"; }
+    else                 { icon = "fitness_center"; label = "Keep practising!"; }
+
+    document.querySelector(".complete-icon").textContent = icon;
+    document.getElementById("completeScore").textContent = `${correct} / ${total}`;
+    document.getElementById("completeLabel").textContent = label;
+    document.getElementById("completeBreakdown").innerHTML = `
+      <div class="breakdown-item">
+        <div class="breakdown-value" style="color:var(--green)">${correct}</div>
+        <div class="breakdown-label">Correct</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-value" style="color:#dc2626">${total - correct}</div>
+        <div class="breakdown-label">Wrong</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-value">${Math.round(pct * 100)}%</div>
+        <div class="breakdown-label">Score</div>
+      </div>
+    `;
+
+    document.getElementById("lessonComplete").classList.add("show");
+    document.getElementById("lessonComplete").scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // Save to logs
+    if (currentUser && currentLesson) {
+      try {
+        await addDoc(collection(db, "logs"), {
+          uid:        currentUser.uid,
+          profileId:  document.getElementById("profileBadgeText").textContent,
+          lessonId:   currentLesson.id,
+          lessonTitle: currentLesson.title,
+          lessonIndex: currentLessonIndex,
+          score:      correct,
+          total:      total,
+          pct:        Math.round(pct * 100),
+          takenAt:    serverTimestamp(),
+        });
+      } catch (e) { console.warn("Could not save log:", e.message); }
+    }
+  }
+
+  // ── Load history ──────────────────────────────────────────────────
+  async function loadHistory() {
+    const container = document.getElementById("historyContent");
+    container.innerHTML = `<div style="text-align:center;padding:2rem"><div class="spinner" style="margin:0 auto"></div></div>`;
+
+    if (!currentUser) return;
+
+    try {
+      const logsQ    = query(collection(db, "logs"), where("uid", "==", currentUser.uid), orderBy("takenAt", "desc"));
+      const logsSnap = await getDocs(logsQ);
+
+      if (logsSnap.empty) {
+        container.innerHTML = `
+          <div class="history-empty">
+            <span class="material-icons-round">history</span>
+            No lesson attempts yet. Complete a lesson to see your history here.
+          </div>`;
+        return;
+      }
+
+      const cards = document.createElement("div");
+      cards.className = "log-cards";
+
+      logsSnap.forEach(d => {
+        const log  = d.data();
+        const pct  = log.pct ?? Math.round((log.score / log.total) * 100);
+        const cls  = pct >= 80 ? "great" : pct >= 50 ? "ok" : "poor";
+        const date = log.takenAt?.toDate
+          ? log.takenAt.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+          : "—";
+
+        const card = document.createElement("div");
+        card.className = "log-card";
+        card.innerHTML = `
+          <div class="log-score-circle ${cls}">${log.score}/${log.total}</div>
+          <div class="log-info">
+            <div class="log-title">Lesson ${(log.lessonIndex ?? 0) + 1}: ${log.lessonTitle ?? "Lesson"}</div>
+            <div class="log-meta">
+              <span class="log-meta-item"><span class="material-icons-round">percent</span>${pct}%</span>
+              <span class="log-meta-item"><span class="material-icons-round">calendar_today</span>${date}</span>
+              <span class="log-meta-item"><span class="material-icons-round">tune</span>${log.profileId ?? "—"}</span>
+            </div>
+          </div>
+        `;
+        cards.appendChild(card);
+      });
+
+      container.innerHTML = "";
+      container.appendChild(cards);
+    } catch (e) {
+      container.innerHTML = `<div class="history-empty"><span class="material-icons-round">error_outline</span>Could not load history.</div>`;
+      console.error(e);
+    }
+  }
 
   // ── Build question card ───────────────────────────────────────────
-  function buildQuestionCard(q, qi) {
+  function buildQuestionCard(q, qi, totalQ) {
     const card = document.createElement("div");
     card.className = "question-card";
-
-    // Header
     const header = document.createElement("div");
     header.className = "question-header";
-    header.innerHTML = `
-      <span class="question-num">Q${qi + 1}</span>
-      <span class="question-text">${q.type === "true_false" ? q.statement : q.question}</span>
-    `;
+    header.innerHTML = `<span class="question-num">Q${qi + 1}</span><span class="question-text">${q.type === "true_false" ? q.statement : q.question}</span>`;
     card.appendChild(header);
 
-    // Body by type
-    if (q.type === "multiple_choice") {
-      card.appendChild(buildMC(q));
-    } else if (q.type === "translation") {
-      card.appendChild(buildTranslation(q));
-    } else if (q.type === "true_false") {
-      card.appendChild(buildTrueFalse(q));
-    } else if (q.type === "conjugation_chart") {
-      card.appendChild(buildConjChart(q));
-    }
+    if (q.type === "multiple_choice")   card.appendChild(buildMC(q, qi, totalQ));
+    else if (q.type === "translation")  card.appendChild(buildTranslation(q, qi, totalQ));
+    else if (q.type === "true_false")   card.appendChild(buildTrueFalse(q, qi, totalQ));
+    else if (q.type === "conjugation_chart") card.appendChild(buildConjChart(q, qi, totalQ));
 
-    // Explanation (hidden until answered)
     const exp = document.createElement("div");
     exp.className = "explanation";
     exp.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
     card.appendChild(exp);
-
     return card;
   }
 
-  // ── Multiple Choice ───────────────────────────────────────────────
-  function buildMC(q) {
+  // ── MC ────────────────────────────────────────────────────────────
+  function buildMC(q, qi, totalQ) {
     const wrap = document.createElement("div");
     wrap.className = "mc-options";
     const letters = ["A","B","C","D"];
-
     q.options.forEach((opt, i) => {
       const el = document.createElement("div");
       el.className = "mc-option";
       el.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
       el.addEventListener("click", () => {
         if (el.classList.contains("disabled")) return;
-        // Disable all
         wrap.querySelectorAll(".mc-option").forEach(o => o.classList.add("disabled"));
-        // Mark selected
         const correct = opt === q.answer;
         el.classList.add(correct ? "correct" : "wrong");
-        // Reveal correct if wrong
         if (!correct) {
           wrap.querySelectorAll(".mc-option").forEach(o => {
-            if (o.querySelector("span:last-child").textContent === q.answer) {
-              o.classList.add("reveal-correct");
-            }
+            if (o.querySelector("span:last-child").textContent === q.answer) o.classList.add("reveal-correct");
           });
         }
-        // Show explanation
-        const exp = el.closest(".question-card").querySelector(".explanation");
-        exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+        el.closest(".question-card").querySelector(".explanation").classList.add("show", correct ? "correct-exp" : "wrong-exp");
+        recordAnswer(qi, correct, totalQ);
       });
       wrap.appendChild(el);
     });
@@ -911,49 +663,38 @@
   }
 
   // ── Translation ───────────────────────────────────────────────────
-  function buildTranslation(q) {
-    const wrap = document.createElement("div");
+  function buildTranslation(q, qi, totalQ) {
+    const wrap  = document.createElement("div");
     wrap.className = "tr-input-area";
-
     const input = document.createElement("input");
-    input.className = "tr-input";
-    input.type = "text";
+    input.className   = "tr-input";
+    input.type        = "text";
     input.placeholder = q.subtype === "vocab" ? "Type the Spanish word…" : "Type your translation…";
-
     const btn = document.createElement("button");
-    btn.className = "tr-check-btn";
+    btn.className   = "tr-check-btn";
     btn.textContent = "Check";
-
     const check = () => {
       if (input.disabled) return;
       const correct = gradeAnswer(input.value, q.answer, q.acceptedAlternatives ?? []);
       input.classList.add(correct ? "correct" : "wrong");
-      input.disabled = true;
-      btn.disabled = true;
+      input.disabled = btn.disabled = true;
       const exp = wrap.closest(".question-card").querySelector(".explanation");
-      if (!correct) {
-        exp.innerHTML = `<strong>Correct answer:</strong> ${q.answer}${q.explanation ? " — " + q.explanation : ""}`;
-      }
+      if (!correct) exp.innerHTML = `<strong>Correct answer:</strong> ${q.answer}${q.explanation ? " — " + q.explanation : ""}`;
       exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+      recordAnswer(qi, correct, totalQ);
     };
-
     btn.addEventListener("click", check);
-    input.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
-
+    input.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
     wrap.appendChild(input);
     wrap.appendChild(btn);
     return wrap;
   }
 
-  // ── True / False ──────────────────────────────────────────────────
-  function buildTrueFalse(q) {
+  // ── True/False ────────────────────────────────────────────────────
+  function buildTrueFalse(q, qi, totalQ) {
     const wrap = document.createElement("div");
     wrap.className = "tf-options";
-
-    [
-      { label: "True",  icon: "check",  val: true  },
-      { label: "False", icon: "close",  val: false },
-    ].forEach(({ label, icon, val }) => {
+    [{ label:"True", icon:"check", val:true }, { label:"False", icon:"close", val:false }].forEach(({ label, icon, val }) => {
       const el = document.createElement("div");
       el.className = "tf-option";
       el.innerHTML = `<span class="material-icons-round">${icon}</span>${label}`;
@@ -964,61 +705,55 @@
         el.classList.add(correct ? "correct" : "wrong");
         if (!correct) {
           wrap.querySelectorAll(".tf-option").forEach(o => {
-            const isCorrectOption = (o.textContent.trim().startsWith("True") && q.answer === true)
-                                 || (o.textContent.trim().startsWith("False") && q.answer === false);
-            if (isCorrectOption) o.classList.add("reveal-correct");
+            const isRight = (o.textContent.trim().startsWith("True") && q.answer === true)
+                         || (o.textContent.trim().startsWith("False") && q.answer === false);
+            if (isRight) o.classList.add("reveal-correct");
           });
         }
-        const exp = el.closest(".question-card").querySelector(".explanation");
-        exp.classList.add("show", correct ? "correct-exp" : "wrong-exp");
+        el.closest(".question-card").querySelector(".explanation").classList.add("show", correct ? "correct-exp" : "wrong-exp");
+        recordAnswer(qi, correct, totalQ);
       });
       wrap.appendChild(el);
     });
     return wrap;
   }
 
-  // ── Conjugation Chart ─────────────────────────────────────────────
-  function buildConjChart(q) {
+  // ── Conjugation chart ─────────────────────────────────────────────
+  function buildConjChart(q, qi, totalQ) {
     const wrap = document.createElement("div");
     wrap.className = "chart-area";
-
     const pronouns = ["yo","tu","el","nosotros","vosotros","ellos"];
-    const displayPronouns = { yo:"yo", tu:"tú", el:"él/ella", nosotros:"nosotros", vosotros:"vosotros", ellos:"ellos" };
-    const chart = document.createElement("div");
+    const display  = { yo:"yo", tu:"tú", el:"él/ella", nosotros:"nosotros", vosotros:"vosotros", ellos:"ellos" };
+    const chart    = document.createElement("div");
     chart.className = "conj-chart";
-
     const inputs = [];
 
     pronouns.forEach(p => {
       const cell = q.chart[p];
       if (!cell) return;
-
       const div = document.createElement("div");
       div.className = "conj-cell";
-      div.innerHTML = `<span class="conj-pronoun">${displayPronouns[p]}</span>`;
-
+      div.innerHTML = `<span class="conj-pronoun">${display[p]}</span>`;
       if (cell.blank) {
         const inp = document.createElement("input");
-        inp.className = "conj-input";
-        inp.type = "text";
-        inp.placeholder = "…";
-        inp.dataset.answer = cell.value;
+        inp.className       = "conj-input";
+        inp.type            = "text";
+        inp.placeholder     = "…";
+        inp.dataset.answer  = cell.value;
         inputs.push(inp);
         div.appendChild(inp);
       } else {
         const span = document.createElement("span");
-        span.className = "conj-value";
+        span.className   = "conj-value";
         span.textContent = cell.value;
         div.appendChild(span);
       }
-
       chart.appendChild(div);
     });
 
     const btn = document.createElement("button");
-    btn.className = "chart-check-btn";
+    btn.className   = "chart-check-btn";
     btn.textContent = "Check";
-
     btn.addEventListener("click", () => {
       if (btn.disabled) return;
       btn.disabled = true;
@@ -1030,17 +765,11 @@
         if (!correct) allCorrect = false;
       });
       const exp = wrap.closest(".question-card").querySelector(".explanation");
-      if (!allCorrect) {
-        const answers = inputs.map(i => `${i.dataset.answer}`).join(", ");
-        exp.innerHTML = `<strong>Correct:</strong> ${answers}${q.explanation ? " — " + q.explanation : ""}`;
-      }
+      if (!allCorrect) exp.innerHTML = `<strong>Correct:</strong> ${inputs.map(i => i.dataset.answer).join(", ")}${q.explanation ? " — " + q.explanation : ""}`;
       exp.classList.add("show", allCorrect ? "correct-exp" : "wrong-exp");
+      recordAnswer(qi, allCorrect, totalQ);
     });
-
-    // Enter submits
-    inputs.forEach(inp => inp.addEventListener("keydown", e => {
-      if (e.key === "Enter") btn.click();
-    }));
+    inputs.forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") btn.click(); }));
 
     wrap.appendChild(chart);
     wrap.appendChild(btn);
@@ -1052,8 +781,7 @@
     return str.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
   function gradeAnswer(userInput, correctAnswer, acceptedAlternatives = []) {
-    const all = [correctAnswer, ...acceptedAlternatives];
-    return all.some(a => normalize(userInput) === normalize(a));
+    return [correctAnswer, ...acceptedAlternatives].some(a => normalize(userInput) === normalize(a));
   }
 </script>
 </body>
