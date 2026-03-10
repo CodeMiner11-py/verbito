@@ -732,9 +732,18 @@
 
     // Read user doc
     const userSnap = await getDoc(doc(db, "users", user.uid));
-    if (!userSnap.exists() || !userSnap.data().lessonProfile) {
-      showScreen("no-quiz"); return;
-    }
+console.log("userSnap exists:", userSnap.exists());
+console.log("userData:", userSnap.data());
+if (!userSnap.exists() || !userSnap.data().lessonProfile) {
+  showScreen("no-quiz"); return;
+}
+
+const profileId = userSnap.data().lessonProfile;
+console.log("profileId:", profileId);
+
+const lessonsSnap = await getDoc(doc(db, "lessons", profileId));
+console.log("lessonsSnap exists:", lessonsSnap.exists());
+console.log("lessonsData:", lessonsSnap.data());
 
     const profileId = userSnap.data().lessonProfile;
     document.getElementById("profileBadgeText").textContent = profileId;
